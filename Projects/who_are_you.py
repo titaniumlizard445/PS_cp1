@@ -16,9 +16,7 @@ while running:
         fav_color = input("What is your favorite color: ")
         
         dictionary[current_user , "Age"] = age
-        dictionary[current_user , "Favorite color"] = fav_color
-        
-        print(dictionary)    
+        dictionary[current_user , "Favorite color"] = fav_color 
     
     end = input("End the program?: ")
     if end == "yes":
@@ -26,4 +24,3 @@ while running:
     
 Users.clear()
 dictionary.clear()
-
