@@ -12,6 +12,8 @@ while Valid != True:
         name = input("What is your First and Last name? ")
     else:
         Valid = True
+        first_name = first_name.capitalize()
+        Last_name = Last_name.capitalize()
 
 
 
@@ -41,3 +43,9 @@ while Valid != True:
     if float(Grade_Point_Average) > 4.0 or float(Grade_Point_Average) < 0.0:
         print("Number to high or to low please try again. ")
         Grade_Point_Average = input("What is your Grade Point Average? ")
+    else:
+        Valid = True
+
+
+
+print("Name: " + first_name + " " + Last_name + "\nPhone number: " + phone_num + "\nGPA: " + Grade_Point_Average)
