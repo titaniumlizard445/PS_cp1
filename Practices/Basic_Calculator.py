@@ -28,9 +28,8 @@ while running:
     elif operation == "flo":
         number3 = number1 // number2
         print(f"{number1} // {number2} = {number3:2f}")
-    elif operation == "ad":
-        number3 = number1 + number2
-        print(f"{number1} + {number2} = {number3:2f}")
     
     stop = input("Do you want to terminate the program")
     
+    if stop = "yes":
+        running = False
