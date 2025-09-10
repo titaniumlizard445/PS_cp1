@@ -29,7 +29,7 @@ while running:
         number3 = number1 // number2
         print(f"{number1} // {number2} = {number3:2f}")
     
-    stop = input("Do you want to terminate the program")
+    stop = input("Do you want to terminate the program? ")
     
-    if stop = "yes":
+    if stop == "yes":
         running = False
