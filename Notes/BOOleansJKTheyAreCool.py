@@ -15,8 +15,8 @@ print(f"Time I guess {currenter_time}")
 print(Time_of_hour)
 
 print(f"The hour is saved as an integer: {isinstance(Time_of_hour, int)}")
-print(f"The hour is saved as an integer: {isinstance(Time_of_hour, float)}")
-print(f"The hour is saved as an integer: {isinstance(Time_of_hour, str)}")
+print(f"The hour is saved as an float: {isinstance(Time_of_hour, float)}")
+print(f"The hour is saved as an string: {isinstance(Time_of_hour, str)}")
 
 game_over = True
 
