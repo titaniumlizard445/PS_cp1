@@ -1,13 +1,17 @@
 #PS 1st What is your grade
-
+grades = []
 while True:
 
     grade = input("Enter a grade here\n").strip()
     grade_without_percent = grade.strip("%")
-    grades = []
-    grades.append(float(grade_without_percent))
+    
+    if not grade:
+        print("please enter a valid input")
+
+    grade_without_percent = float(grade_without_percent)
+    grades.append(grade_without_percent)
     divided_factor = len(grades)
-    combined = grades.sum()
+    combined = sum(grades)
     average_grade = combined / divided_factor
 
     if average_grade > 100.0:
@@ -30,9 +34,9 @@ while True:
         print(f" You have an {average_grade} on average. That is an C-")
     elif average_grade >= 65.0:
         print(f" You have an {average_grade} on average. That is an D")
-    elif average_grade >= 60:
+    elif average_grade >= 60.0:
         print(f" You have an {average_grade} on average. That is an D-")
-    elif average_grade <= 60:
+    elif average_grade <= 60.0:
         print(f" You have an {average_grade} on average. That is an F. DO BETTER")
     elif not average_grade:
         print("please enter a valid input")
