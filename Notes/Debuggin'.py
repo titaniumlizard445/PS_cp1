@@ -1,9 +1,9 @@
 #PS 1st Debugged notes!
 import time as Clock
-#syntax error - grammer error
+#syntax error - grammar error
 
 
-num =  1
+num = 1
 while True:
 
     print(num)
