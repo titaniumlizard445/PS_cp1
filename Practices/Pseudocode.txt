@@ -1,0 +1,10 @@
+PS 1st Pseudocode tic tac toe
+
+import random 
+
+declare a list that has 3 lists inside and has spaces in a row for each nested list
+
+Display the board (which is the list)
+
+
+
