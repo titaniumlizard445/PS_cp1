@@ -2,9 +2,161 @@ PS 1st Pseudocode tic tac toe
 
 import random 
 
-declare a list that has 3 lists inside and has spaces in a row for each nested list
+declare a list that has 3 lists inside and has spaces or underscores in a row for each nested list
 
-Display the board (which is the list)
+declare a variable to keep score
+
+while loop until the user quits
+    ask the user if they would like to be X or O and store that in a variable and make a variable that stores the opposite for the computer and make sure to tell them that x goes first O goes second
+    Display the board (which is the list)
+
+    game loop
+    loop until game over
+        
+        checks to see if the player goes first or the computer goes first X or O
 
 
+        
+        check if the board is filled up completely
+        checks to see if there is anything spaces in any of the lists
+        if there is not
+            break out of the loop
+            display tie game
+        or if there is space
+            let the game continue
 
+
+        loop until valid input and it is in a space
+            Ask the player for which space they put their mark onto the board
+
+            see if that space is already taken up
+            if there is nothing there then get out of the loop
+        
+        Insert their chosen symbol onto the board
+
+        check if they have 3 in a row
+
+        if row 1 is filled by player
+            display board
+            show player wins
+            add 1 to the player score
+            get out of the game loop
+            break out of the the game loop
+        
+        or if row 2 is filled by player
+            display board
+            show player wins
+            add 1 to the player score
+            break out of the the game loop
+        
+        or if row 3 is filled by player 
+            display board
+            show player wins
+            add 1 to the player score
+            break out of the the game loop
+        
+        or if the first space in every row is filled by player
+            display board
+            show player wins
+            add 1 to the player score
+            break out of the the game loop
+        
+        or if the second space in every row is filled by player
+            display board
+            show player wins
+            add 1 to the player score
+            break out of the the game loop
+
+        or if third space in every row is filled by player
+            display board
+            show player wins
+            add 1 to the player score
+            break out of the the game loop
+        
+        or if the first space in the first row and the second space in the second row and the third space in the third tow is filled by the player
+            display board
+            show player wins
+            add 1 to the player score
+            break out of the the game loop
+
+        or if the first space in the third row and the second space in the second row and the third space in the third row is filled by player
+            display board
+            show player wins
+            add 1 to the player score
+            break out of the the game loop
+        
+        else
+            loop until computer gives a valid space
+                computer chooses a space
+
+                if computer chosen space is not filled
+                    put the computers mark into that space
+                    get out of the loop
+                else
+                    let the loop continue
+                    
+            
+            Computer win conditions
+
+            if row 1 is filled by Computer
+            display board
+            show Computer wins
+            add 1 to the computer score
+        
+            or if row 2 is filled by Computer
+                display board
+                show Computer wins
+                add 1 to the computer score
+                break out of the the game loop
+            
+            or if row 3 is filled by Computer 
+                display board
+                show Computer wins
+                add 1 to the computer score
+                break out of the the game loop
+            
+            or if the first space in every row is filled by Computer
+                display board
+                show Computer wins
+                add 1 to the computer score
+                break out of the the game loop
+            
+            or if the second space in every row is filled by Computer
+                display board
+                show Computer wins
+                add 1 to the computer score
+                break out of the the game loop
+
+            or if third space in every row is filled by Computer
+                display board
+                show Computer wins
+                add 1 to the computer score
+                break out of the the game loop
+            
+            or if the first space in the first row and the second space in the second row and the third space in the third tow is filled by the Computer
+                display board
+                show Computer wins
+                add 1 to the computer score
+                break out of the the game loop
+
+            or if the first space in the third row and the second space in the second row and the third space in the third row is filled by Computer
+                display board
+                show Computer wins
+                add 1 to the computer score
+                break out of the the game loop
+
+            else
+                continue the game
+        
+    after they have gotten
+
+    display the scores for player and computer
+        
+    ask the player if they want to go again
+
+    if they do want to go again
+        do nothing
+        
+    or if they don't want to 
+        get out of the loop
+        display end message
