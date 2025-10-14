@@ -42,20 +42,20 @@ while True:
             score += 1
         #checks if a uppercase letter is in password
 
-        if x.isupper():
-            Specifications["Upper_Case_letter"] = True
-            score += 1
+    if x.isupper():
+        Specifications["Upper_Case_letter"] = True
+        score += 1
 
-        #checks if a lowercase letter is in password
-        if x.islower():
-            Specifications["Lower_Case_letter"] = True
-            score += 1
+    #checks if a lowercase letter is in password
+    if x.islower():
+        Specifications["Lower_Case_letter"] = True
+        score += 1
 
-        #checks if a number is in the password
-        if x.isnumeric():
-            Specifications["Numbers"] = True
-            score += 1
-    #Gives the progress bar a score
+      #checks if a number is in the password
+    if x.isnumeric():
+        Specifications["Numbers"] = True
+        score += 1
+  #Gives the progress bar a score
     num = 0
     for b in Progress_Bar:
         if score == num:
