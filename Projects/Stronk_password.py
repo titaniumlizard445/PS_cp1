@@ -2,16 +2,18 @@
 import time
 
 #Declare a list with all the special characters inside
-Spec_Chars = ["!","@","#","$","%","^","&","*","(",")","_","+","-","=","[","]","{","}","|",";",":",",",".","<",">","?",'"',"\\"]
-#variable to keep track of the user's password strength
-score = 0
+Spec_Chars = ["!","@","#","$","%","^","&","*","(",")","_","+","-","=","[","]","{","}","|",";",":",",",".","<",">","?",'"',"\\"," "]
+
 #create a list to store user previous attempts
 previous_Attempts = []
 #loop until user is done using the program
-iterationCount = 0
 while True:
+    score = 0
+    iterationCount = 0
     #Make a list that has blank spaces for a progress bar
-    progress = ["_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_"]
+    Progress_Bar = ["0","1","2","3","4","5"]
+    #loading screen bar
+    Loading_Screen = ["_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_","_"]
     #create a dictionary that holds if the user has each of the specifications for a good password
     Specifications = {
         "password_over_12":False,
@@ -29,40 +31,48 @@ while True:
     #Checks password strength
 
     #checks if the password is longer than 12
-    if len(User_Pass) <= 12:
+    if len(User_Pass) >= 12:
         Specifications["password_over_12"] = True
         score += 1
 
-    #checks if a special character is in password
+    #checks if a special character is in password on every character in the password
     for x in User_Pass:
         if x in Spec_Chars:
             Specifications["Special_Character"] = True
             score += 1
-    #checks if a uppercase letter is in password
-    if User_Pass.isupper():
-        Specifications["Upper_Case_letter"] = True
-        score += 1
+        #checks if a uppercase letter is in password
 
-    #checks if a lowercase letter is in password
-    if User_Pass.islower():
-        Specifications["Lower_Case_letter"] = True
-        score += 1
+        if x.isupper():
+            Specifications["Upper_Case_letter"] = True
+            score += 1
 
-    #checks if a number is in the password
-    if User_Pass.isnumeric():
-        Specifications["Numbers"] = True
-        score += 1
+        #checks if a lowercase letter is in password
+        if x.islower():
+            Specifications["Lower_Case_letter"] = True
+            score += 1
 
-    #gives user a progress bar
-    for i in progress:
-        time.sleep(1)
-        progress[iterationCount] = "#"
+        #checks if a number is in the password
+        if x.isnumeric():
+            Specifications["Numbers"] = True
+            score += 1
+    #Gives the progress bar a score
+    num = 0
+    for b in Progress_Bar:
+        if score == num:
+            Progress_Bar[num] = "#"
+        num += 1
+
+    #gives user a Loading Screen
+    for i in Loading_Screen:
+        time.sleep(0.25)
+        Loading_Screen[iterationCount] = "#"
         iterationCount += 1
-        print(progress)
+        print(Loading_Screen)
         
     #tells user their score 
     print(f"Your password was: {User_Pass} which scored {score}")
-    
+    print(Progress_Bar)
+
     #tells user what they can do to improve password
     if Specifications["password_over_12"] == False:
         print("Try making your password longer")
@@ -85,3 +95,8 @@ while True:
     
     #adds password to previous passwords
     previous_Attempts.append({User_Pass:score})
+    
+    #Ask user if they are done with the program
+    done = input("Are you done using this program? ")
+    if done == "yes":
+        break
