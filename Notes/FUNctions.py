@@ -35,3 +35,7 @@ def initials(Name):
         initials += Name[0]
     
     return initials
+
+print(initials("Albert Has A Hat And His Ape"))
+
+print(initials("Yarharhar Out Ur _ Getting On The _ Pack Randy And No Kicking Ed Darwin"))
