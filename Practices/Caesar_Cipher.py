@@ -1,6 +1,6 @@
 #PS 1st Encoder and Decode
 
-#list for characters in the alphabet
+
 
 #function for encrypting
 def Encrypt(Message, Cipher_Number):
