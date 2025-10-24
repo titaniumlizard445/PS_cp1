@@ -45,4 +45,14 @@ player_types = {
     }
 }
 
+print("Welcome to the DnD-like battle simulator")
+
+Player_name = input("please answer to following questions according to the instructrions \n What is your name or the name of your character? \n write here: ")
+
+
+
+
+
+
+
 
