@@ -104,7 +104,6 @@ action = ""
 Frozen_enemy = 0
 Monsters = ["Blob", "Strong Lizard" , "Goblin" , "Dragon"]
 Monster = random.choice(Monsters)
-
 def Monster_turn(Monster_Choice , Player_Defense , Player_health):
     
     print(f" It is now {Monster_Choice}'s turn to go")
@@ -117,7 +116,8 @@ def Monster_turn(Monster_Choice , Player_Defense , Player_health):
         print(f"{Monster_Choice} dealt {Damage_given} damage!")
         return Player_health
     else:
-        print(f"{Monster_Choice} missed")
+        print(f"{Monster_Choice} missed, chance: {hit_number}")
+        return Player_health
 
 
 print("Welcome to the DnD-like battle simulator")
@@ -128,7 +128,7 @@ Player_name = input("please answer to following questions according to the instr
 while True:
     #authorizes that the user puts in a valid input for their class
     while True:
-      Chosen_Class = input("What Class would you like to be? (press the number asociated with your chosen class) \n 1) Melee - You have a lot of health and defense but a low hit chance \n 2) Mage you have low health and defense but high hit chance and attack power \n 3) Rogue - You have high defense and high hit chance").strip()
+      Chosen_Class = input("\n What Class would you like to be? (press the number asociated with your chosen class) \n 1) Melee - You have a lot of health and defense but a low hit chance \n 2) Mage you have low health and defense but high hit chance and attack power \n 3) Rogue - You have high defense and high hit chance \n write here: ").strip()
       
       Player_type = ""
     
@@ -147,21 +147,22 @@ while True:
       else:
         print("Invalid Number please try again")
 
-    print("To win you must take out 10 monsters")
-    print(f"Your Journey begins and you encounter a {Monster}")
+    print("\n To win you must take out 10 monsters \n")
+    print(f"Your Journey begins and you encounter a {Monster} \n")
 
     #starts journey
     contenders = ["Player","Monster"]
     Last_turn = random.choice(contenders)
     battles = 0
     playerhp = Player_type["hp"]
+    print(playerhp)
     while True:
         #starts battle
         while True:
             if Last_turn == "Player":
                 #monster turn
                 if Frozen_enemy <= 0:
-                    Player_type["hp"] = Monster_turn(Monster, Player_type["Defense"], Player_type["hp"])
+                    playerhp = Monster_turn(Monster, Player_type["Defense"], playerhp)
                     print("Monster turn is over")
                     Last_turn = "Monster"
                     print(f"You have {playerhp}hp left and {Monster} has {Monster_Boys[Monster]['hp']}")
@@ -174,7 +175,7 @@ while True:
                 
                 #authorizes a valid move
                 while True:
-                    action = input(Player_type["actions"]).strip()
+                    action = input(f"{Player_type["actions"]} \n write here: ").strip()
                     if action in Player_type["actions"]:
                         break
                     else:
@@ -183,11 +184,12 @@ while True:
                     print("coward")
                     break
                 elif action == "drink health potion":
-                    Player_type["hp"] += Player_type[action["drink health potion"]]
+                    playerhp += Player_type["actions"]["drink health potion"]
                     Last_turn = "Player"
+                    print(f"You healed to {playerhp}")
                 if Frozen_enemy > 0:
                     Frozen_enemy -= 1
-                else:
+                elif action != "drink health potion":
                     #attacks
                     player_hit_chance = random.randint(1,21) + Player_type["hit chance"]
                     if player_hit_chance >= Monster_Boys[Monster]["Defense"]:
@@ -198,6 +200,7 @@ while True:
                             Monster_Boys[Monster]["hp"] -= player_damage
                             print(f"You have {Player_type['hp']} HP, and {Monster} has {Monster_Boys[Monster]['hp']} HP")
                             Last_turn = "Player"
+                        #freeze
                         elif action == "freeze":
                             frozen_chance = random.randint(1,10)
                             if frozen_chance >= 5 and Monster != "Dragon":
@@ -205,23 +208,30 @@ while True:
                                 Last_turn = "Monster"
                                 Frozen_enemy += 2
                             else:
-                                print("You rolled lower than a 5 or your enemy was a dragon.(You can't freeze them)")
+                                print(f"You rolled lower than a 5 or your enemy was a dragon.(You can't freeze them) chance: {frozen_chance}")
                         elif action == "shield":
-                            if Player_type["defense"] >= 45:
+                            if Player_type["Defense"] >= 45:
                                 print("You can not get more defense")
                             else:
                                 print("You Put up your shield to add 15 defense")
                                 Player_type["Defense"] += Player_type["actions"[action]]
                         else:
-                            if Player_type == "Melee":
+                            if Player_type == "Melee" and action == "sword":
                                 player_damage = random.randint(1,16) + Player_type["sword"]
-                            elif Player_type == "Rogue":
+                                Monster_Boys[Monster]["hp"] -= player_damage
+                                Last_turn = "Player"
+                            elif Player_type == "Rogue" and action == "attack":
                                 player_damage = random.randint(1,10) + Player_type["bow"]
-                            elif Player_type == "Mage":
+                                Monster_Boys[Monster]["hp"] -= player_damage
+                                Last_turn = "Player"
+                            elif Player_type == "Mage" and action == "bow":
                                 player_damage = random.randint(1,21) + Player_type["attack"]
-                            print(f"You used {action} and dealt {player_damage}")
+                                Monster_Boys[Monster]["hp"] -= player_damage
+                                Last_turn = "Player"
+                            print(f"You used {action} and dealt {player_damage} damage!")
                     else:
                         print("You missed")
+                        Last_turn = "Player"
                         
     
             if Monster_Boys[Monster]["hp"] <= 0:
@@ -238,8 +248,7 @@ while True:
         Monster_Boys = Backup_Monster_Boys.copy()
         #player death,flee or win
         
-        if Player_type["hp"] <= 0:
-            print(f"{Player_name} died")
+        if playerhp <= 0:
             break
         elif battles == 10:
             print(f"Good job {Player_name} you have conquered 10 enemies! You Win!")
@@ -249,7 +258,7 @@ while True:
             
         Monster = random.choice(Monsters)
   
-    Play_again = input("Would you like to play again? \n (y/n) \n invalid inputs will result in the game running again")
+    Play_again = input("Would you like to play again? \n (y/n) \n invalid inputs will result in the game running again \n write here: ")
     if Play_again == "n":
         print("See you later!")
         break
