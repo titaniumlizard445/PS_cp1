@@ -68,7 +68,6 @@ writingturtle.pendown()
 writingturtle.forward(500)
 writingturtle.penup()
 writingturtle.goto(1000,1000)
-
 #position
 turtle1.goto(-400,400)
 turtle2.goto(-400,300)
@@ -88,31 +87,38 @@ turtle5.pendown()
 
 while Finish == False:
     turtle1.forward(random.randint(1,25))
-    t1pos = turtle1.position()
-    if t1pos[1] >= 300.0:
+    if turtle1.xcor() >= 300.0:
         Finish == True
         winner = "Turtle 1"
+        print(F"{winner} wins!")
+        Bob.done()
+        Bob.exitonclick()
     turtle2.forward(random.randint(1,25))
-    t2pos = turtle2.position()
-    if t2pos[1] >= 300.0:
+    if turtle2.xcor() >= 300.0:
         Finish == True
         winner = "Turtle 2"
+        print(F"{winner} wins!")
+        Bob.done()
+        Bob.exitonclick()
     turtle3.forward(random.randint(1,25))
-    t3pos = turtle3.position()
-    if t3pos[1] >= 300.0:
+    if turtle3.xcor() >= 300.0:
         Finish == True
         winner = "Turtle 3"
+        print(F"{winner} wins!")
+        Bob.done()
+        Bob.exitonclick()
     turtle4.forward(random.randint(1,25))
-    t4pos = turtle4.position()
-    if t4pos[1] >= 300.0:
+    if turtle4.xcor() >= 300.0:
         Finish == True
         winner = "Turtle 4"
+        print(F"{winner} wins!")
+        Bob.done()
+        Bob.exitonclick()
     turtle5.forward(random.randint(1,25))
-    t5pos = turtle5.position()
-    if t5pos[1] >= 300.0:
+    if turtle5.xcor() >= 300.0:
         Finish == True
         winner = "Turtle 5"
-
-
+        print(F"{winner} wins!")
+        Bob.done()
+        Bob.exitonclick()
 Bob.done()
-print(F"{winner} wins!")
