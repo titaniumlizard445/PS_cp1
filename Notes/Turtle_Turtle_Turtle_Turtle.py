@@ -2,7 +2,7 @@
 
 import turtle
 
-colors = ["darkblue","red","lightblue","orange","blue","yellow"]
+colors = ["darkblue","lightblue","blue","navyblue","cyan","darkcyan"]
 width = 10
 turtle.color(colors[1])
 turtle.speed(0)
@@ -11,9 +11,10 @@ turtle.width(width)
 turtle.shape("turtle")
 
 for x in range(1,5000):
-    turtle.forward(100)
-    turtle.right(59)
-    turtle.color(colors[x%6])
+    turtle.backward(x/4)
+    turtle.forward(x)
+    turtle.right(89)
+    turtle.pencolor(colors[x%6])
     width+=x
     width /= 10
     turtle.width(width)
