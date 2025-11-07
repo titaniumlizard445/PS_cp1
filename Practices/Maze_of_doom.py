@@ -7,33 +7,41 @@ import random
 size_of_squares = 25
 F = False
 T = True
-Bools = [T,F]
-ex_col = [F,F,F,F,F,F,F,F,F,F]
-ex_row = [F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F]
-#all the rows in the grid
-grid_rows =  []
-#columns
-grid_columns = []
-
 #updating a column
-for x in range(0,21):
-    for y in range(0,10):
-        #change each part of a column
-        ex_col[y] = random.choice(Bools)
-    #add that column to the maze
-    grid_columns.append(ex_col)
+def randomize_columns():
+    F = False
+    T = True
+    Bools = [T,F]
     ex_col = [F,F,F,F,F,F,F,F,F,F]
+    #columns
+    grid_columns = []
+    for x in range(0,21):
+        for y in range(0,10):
+            #change each part of a column
+            ex_col[y] = random.choice(Bools)
+        #add that column to the maze
+        grid_columns.append(ex_col)
+        ex_col = [F,F,F,F,F,F,F,F,F,F]
+    print(grid_columns)
+    return grid_columns
 
-print(grid_columns)
-
-for x in range(0,9):
-    for y in range(0,20):
-        #change each part of a row
-        ex_row[y] = random.choice(Bools)
-    #add that new randomized row to the grid
-    grid_rows.append(ex_row)
-    ex_row = [F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F]
-print(grid_rows)
+def Randomize_rows():
+    F = False
+    T = True
+    Bools = [T,F]
+    ex_row = [F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F]
+    #all the rows in the grid
+    grid_rows =  []
+    for x in range(0,9):
+        for y in range(0,20):
+            #change each part of a row
+            ex_row[y] = random.choice(Bools)
+        #add that new randomized row to the grid
+        grid_rows.append(ex_row)
+        ex_row = [F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F]
+    print(grid_rows)
+    return grid_rows
+    
 
 
 
@@ -44,14 +52,16 @@ def solvability(grid_row,grid_col):
     to_be_checked_coords = [(11,0)]
     #vars for coords
     visited = []
-    maze_size = len(grid_row) - 1
+    maze_size = len(grid_row)
     while to_be_checked_coords:
         #get coordinates for checking
         x , y = to_be_checked_coords.pop()
 
-        if x == maze_size-1 and y == maze_size -1:
+        #if it is outside the maze on the other side
+        if x == 11 and y == 9:
             return True
         
+        #if the space has already been checked
         if (x , y) in visited: 
             continue
 
@@ -62,20 +72,29 @@ def solvability(grid_row,grid_col):
 
     #checks if there is a wall north of it
         if y > 0 and grid_row[y][x] == False:
-            to_be_checked_coords.append((x,y-1))
-    #checks if there is a wall west of it
-        if x > 0 and grid_col[y][x] == False:
-            to_be_checked_coords.append((x-1,y))
-
-    #checks if there is a wall east of it
-        if x < maze_size - 1 and grid_col[y][x+1] == False:
-            to_be_checked_coords.append((x+1,y))
-
-    #checks if there is a wall south of it
-        if y < maze_size -1 and grid_row[y+1][x] == False:
             to_be_checked_coords.append((x,y+1))
+    #checks if there is a wall west of it
+        if x > 0 and grid_col[x-1][y] == False:
+            to_be_checked_coords.append((x+1,y))
+    #checks if there is a wall east of it
+        if x < maze_size - 1 and grid_col[y][x-1] == False:
+            to_be_checked_coords.append((x-1,y))
+    #checks if there is a wall south of it
+        if y < maze_size-1 and grid_row[y-1][x] == False:
+            to_be_checked_coords.append((x,y-1))
 
-#solvability(grid_rows,grid_columns)
+    return False
+
+
+#runs till the maze is solvable
+solved = False
+while not solved:
+    randomize_columns()
+    Randomize_rows()
+    solved = solvability(Randomize_rows(),randomize_columns())
+
+
+
 
 #create turtle
 Bob_the_builder = turtle.Turtle()
@@ -109,7 +128,7 @@ Outside_boundary()
 #horizontal walls
 Bob_the_builder.goto(-250,225)
 iterator = 0
-for w in grid_rows:
+for w in Randomize_rows():
     iterator += 1
     Bob_the_builder.goto(-250,iterator*25)
     #draws a wall when there is true else it has the pen up and moves forward
@@ -125,7 +144,7 @@ for w in grid_rows:
 Bob_the_builder.goto(250,250)
 iterator = 0
 Bob_the_builder.right(90)
-for w in grid_columns:
+for w in randomize_columns:
     iterator += 1
     Bob_the_builder.goto(275-(25*iterator),250)
     #draws a wall when there is true else it has the pen up and moves forward
