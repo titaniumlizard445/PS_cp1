@@ -2,6 +2,8 @@
 
 Side_dishes_ordered = 0
 order = []
+User_choice = ""
+Cost = 0
 
 #options for hamburgers and how much they are
 Bamhurgers = {
@@ -42,45 +44,74 @@ reasonably_price_menu = {
     "Sides":sides
 }
 
+#Displays Individual menu and just makes code more modular
+def IndividualMenu(Food_type):
+    options = Food_type.keys()
+    prices = Food_type.values()
+    print({options})
+    print({prices})
+
 print("Hello and welcome to the Reasonably priced Restaurant located directly above I-15\n\nThe Freedom Diner\n\n")
 
 Ordering = True
 while Ordering:
+    User_choice = ""
     #type of food they are ordering
     selection = input("What type of food would you like to order? \n 1) Bamhurgers \n 2) Drinks \n 3) Sides \n Please input the number here: ").strip()
-
+    print(selection)
     #ordering Hamburgers
     if selection == "1":
         print("Please select one of the following to order with the prices below each respectively ")
 
         #Display Options
-
-        print(Bamhurgers.keys())
-        print(Bamhurgers.values())
-
+        IndividualMenu(Bamhurgers)
         #ask user what they want
-
+        User_choice = input("What type of Bamhurger do you want? \n write here: ").strip()
+        if User_choice in Bamhurgers:
+            order.append(User_choice)
+            Cost += Bamhurgers[User_choice]
+        else:
+            print("Invalid Input Please Try Again (Make sure to write it as it is in the Menu)")
     #ordering Drinks
     if selection == "2":
         print("Please select one of the following to order with the prices below each respectively")
 
         #Display Options
-
-        print(Dinks.keys())
-        print(Dinks.values())
-
+        IndividualMenu(Dinks)
         #ask user what they want
-
+        User_choice = input("What type of Bamhurger do you want? \n write here: ").strip()
+        if User_choice in Dinks:
+            order.append(User_choice)
+            Cost += Dinks[User_choice]
+        else:
+            print("Invalid Input Please Try Again (Make sure to write it as it is in the Menu)")
     #ordering two sides
     if selection == "3":
         print("Please select one of the following to order with the prices below each respectively")
 
         #Display Options
-
-        print(sides.keys())
-        print(sides.values())
-        
+        IndividualMenu(sides)
         #ask user what they want
 
+        User_choice = input("What type of Bamhurger do you want? \n write here: ").strip()
+        if User_choice in sides:
+            order.append(User_choice)
+            Cost += sides[User_choice]
+        else:
+            print("Invalid Input Please Try Again (Make sure to write it as it is in the Menu)")
+
     #finish order
+    done = input("Are you done ordering?").strip().lower()
+    if done == "yes" or  done == "y":
         #check to make sure that the user has ordered two side dishes
+        if Side_dishes_ordered >= 2:
+            Ordering = False
+        else:
+            print("Please order two or more side dishes")
+    else:
+        print("\n Continue Ordering \n")
+
+print(f"Your Order is: ")
+for x in order:
+    print(f"{x}\n")
+print(f"The cost of your order is: {Cost}")
