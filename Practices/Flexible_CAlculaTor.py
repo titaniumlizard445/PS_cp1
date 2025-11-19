@@ -4,43 +4,48 @@ running = True
 values = []
 #create functions for each type of operation
 #sum
-def addall(numbers):
+def addall(*numbers):
     total = 0.0
-    for x in numbers:
-        total+=x
+    for i in numbers:
+        for x in i:
+            total+=x
     return total
 
 #Average
-def Averages(numbers):
+def Averages(*numbers):
     average = 0.0
     iterations = 0
-    for y in numbers:
-        average+=y
-        iterations+=1
+    for i in numbers:
+        for y in i:
+            average+=y
+            iterations+=1
     average/=iterations
     return average
     
 #Max
-def Maximum(numbers):
+def Maximum(*numbers):
     max = 0.0
-    for z in numbers:
-        if z >= max:
-            max = z
+    for i in numbers:
+        for z in i:
+            if z >= max:
+                max = z
     return max
 
 #Min
-def Minimum(numbers):
+def Minimum(*numbers):
     min = numbers[0]
-    for a in numbers:
-        if a <= min:
-            min = a
+    for i in numbers:
+        for a in i:
+            if a <= min:
+                min = a
     return min
 
 #Product
-def Multiplyall(numbers):
+def Multiplyall(*numbers):
     product = 1
-    for b in numbers:
-        product *= b
+    for i in numbers:
+        for b in i:
+            product *= b
     return product
 
 #introduce user
