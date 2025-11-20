@@ -2,10 +2,12 @@
 import time as Clock
 import random as Random
 string = ""
-choices = (" ","O"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ")
+choices = (" ","*"," "," "," "," "," "," ","."," "," "," "," "," ","|"," "," "," "," ")
 while True:
-    randomnum = Random.choice(choices)
-    string+=randomnum
+    for x in range(0,100):
+        randomnum = Random.choice(choices)
+        string+=randomnum
     print(string)
-    Clock.sleep(0.1)
+    Clock.sleep(0.01)
+    string=""
     
