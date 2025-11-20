@@ -1,9 +1,11 @@
 #PS space invaders thing
-
-import random
-string = []
-choices = (" ","O"," "," "," ")
+import time as Clock
+import random as Random
+string = ""
+choices = (" ","O"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ")
 while True:
-    string = random.choice(choices)
+    randomnum = Random.choice(choices)
+    string+=randomnum
     print(string)
+    Clock.sleep(0.1)
     

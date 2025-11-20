@@ -14,5 +14,5 @@ while True:
     
     nums[0] = othernum
     
-    Clock.sleep(0.1)
+    #Clock.sleep(0.1)
 
