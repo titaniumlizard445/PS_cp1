@@ -26,7 +26,7 @@ while True:
     #number=input("Enter a whole non-zero number.")
     number=input("Enter a whole non-zero number.")
     #If number.isint()==False or int(number)==0:
-    #PS(.isint() is not a valid method replace with isinstance(number, integer) also turned number into an int)
+    #PS(.isint() is not a valid method replace with isdigit())
     if number.isdigit()==False or int(number)==0:
         #Print("Invalid answer")
         print("Invalid answer")
