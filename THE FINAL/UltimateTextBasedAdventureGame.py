@@ -8,6 +8,7 @@ import time
 
 player_stats = {"Strength":4,
                 "Intelligence":2,
+                "Defense":1,
                 "Money":0,
                 "Health Points":125,
                 "Slots Unlocked":3,
@@ -20,9 +21,47 @@ enemies_stats={"Rat Burrower":{"Strength":5,"HP":50},
         "Rat Spartan":{"Strength":8,"HP":120}
                        }
 enemies = ["Rat Burrower", "Rat Soldier", "Rat Archer", "Rat Spartan"]
-village_shops = {"Wellville":{"heal":15},
-                 "Chemisville":{"Tome of Damage":50,
-                                "Tome of Max Health":60}}
+village_shops = {"Wellville":{"Heal":{"price":25,
+                                      "description":"The doctors of Wellville heal you to max health",
+                                      "stock":9999999}},
+                 "Chemisville":{"Tome of Damage":{"price":50,
+                                                  "description":"Increases your Strength when it is in your inventory",
+                                                  "stock":3},
+                                "Tome of Max Health":{"price":40,
+                                                      "descripton":"Increases your defense when it is in your inventory",
+                                                      "stock":3},
+                                "Tome of Defense":{"price":20,
+                                                   "description":"Increases your defense while in inventory",
+                                                   "stock":3}
+                                },
+                "Gobapdular":{"Useless Hay":{"Price":10,
+                                               "description":"A bundle of a farmer's finest wheat",
+                                               "stock":10}
+                                        },
+                "Kraftville":{"Iron ingot":{"price":15,
+                                            "description":"A refined metal straight from kraftsville caves",
+                                            "stock":10}},
+                "Bovisad":{"Brisket":{"price":60,
+                                         "description":"Increases your max health by 25hp permanently",
+                                         "stock":8},
+                            "Pork":{"price":30,
+                                    "description":"You gain 50hp",
+                                    "stock":15}},
+                "Kingdomsville":{"Not Available":{"price":0,
+                                                  "description":"King Timmy is to lazy to make merchants sell anything",
+                                                  "stock":0}},
+                "Escargot":{"Longer chopstick":{"price":50,
+                                                "description":"Weapon: is stronger than default chopsticks but is otherwise useless"}},
+                "Litteratious":{"Send mail":{"price":10,
+                                             "description":"You can write a letter to anyone and you will receive a reply instantly (note:does not contribute to the story in any way shape or form)",
+                                             "stock":9999999999}}
+}
+
+chestlootsystem = {
+    #There is repeats of the same items for skewing chance
+    "items":["Money","John's Axe","Pork","Money","Intelligence","Intelligence","Intelligence","Intelligence","Intelligence","Money","Money","Intelligence"]
+}
+
 freed_villages = []
 
 resetdictionary= {"player stats":{"Strength":4,"Intelligence":2,"Money":0,"Health Points":125,"Slots Unlocked":3},
