@@ -21,40 +21,77 @@ enemies_stats={"Rat Burrower":{"Strength":5,"HP":50},
         "Rat Spartan":{"Strength":8,"HP":120}
                        }
 enemies = ["Rat Burrower", "Rat Soldier", "Rat Archer", "Rat Spartan"]
-village_shops = {"Wellville":{"Heal":{"price":25,
-                                      "description":"The doctors of Wellville heal you to max health",
-                                      "stock":9999999}},
-                 "Chemisville":{"Tome of Damage":{"price":50,
-                                                  "description":"Increases your Strength when it is in your inventory",
-                                                  "stock":3},
-                                "Tome of Max Health":{"price":40,
-                                                      "descripton":"Increases your defense when it is in your inventory",
-                                                      "stock":3},
-                                "Tome of Defense":{"price":20,
-                                                   "description":"Increases your defense while in inventory",
-                                                   "stock":3}
-                                },
-                "Gobapdular":{"Useless Hay":{"Price":10,
-                                               "description":"A bundle of a farmer's finest wheat",
-                                               "stock":10}
-                                        },
-                "Kraftville":{"Iron ingot":{"price":15,
-                                            "description":"A refined metal straight from kraftsville caves",
-                                            "stock":10}},
-                "Bovisad":{"Brisket":{"price":60,
-                                         "description":"Increases your max health by 25hp permanently",
-                                         "stock":8},
-                            "Pork":{"price":30,
-                                    "description":"You gain 50hp",
-                                    "stock":15}},
-                "Kingdomsville":{"Not Available":{"price":0,
-                                                  "description":"King Timmy is to lazy to make merchants sell anything",
-                                                  "stock":0}},
-                "Escargot":{"Longer chopstick":{"price":50,
-                                                "description":"Weapon: is stronger than default chopsticks but is otherwise useless"}},
-                "Litteratious":{"Send mail":{"price":10,
-                                             "description":"You can write a letter to anyone and you will receive a reply instantly (note:does not contribute to the story in any way shape or form)",
-                                             "stock":9999999999}}
+village_shops = {
+    "Wellville":{
+        "Heal":{
+            "price":25,
+            "description":"The doctors of Wellville heal you to max health",
+            "stock":9999999
+        }
+    },
+    "Chemisville":{
+        "Tome of Damage":{
+            "price":50,
+            "description":"Increases your Strength when it is in your inventory",
+            "stock":3
+        },
+        "Tome of Max Health":{
+            "price":40,
+            "descripton":"Increases your defense when it is in your inventory",
+            "stock":3
+        },
+        "Tome of Defense":{
+            "price":20,
+            "description":"Increases your defense while in inventory",
+            "stock":3
+        }
+    },
+    "Gobapdular":{
+        "Useless Hay":{
+            "Price":10,
+            "description":"A bundle of a farmer's finest wheat",
+            "stock":10
+        }
+    },
+    "Kraftville":{
+        "Iron ingot":{
+            "price":15,
+            "description":"A refined metal straight from kraftsville caves",
+            "stock":10
+        }
+    },
+    "Bovisad":{
+        "Brisket":{
+            "price":60,
+            "description":"Increases your max health by 25hp permanently",
+            "stock":8},
+        "Pork":{
+            "price":30,
+            "description":"You gain 50hp",
+            "stock":15
+        }
+    },
+    "Kingdomsville":{
+        "Not Available":{
+            "price":0,
+            "description":"King Timmy is to lazy to make merchants sell anything",
+            "stock":0
+        }
+    },
+    "Escargot":{
+        "Longer chopstick":{
+            "price":50,
+            "description":"Weapon: is stronger than default chopsticks but is otherwise useless",
+            "stock":1
+        }
+    },
+    "Litteratious":{
+        "Send mail":{
+            "price":10,
+            "description":"You can write a letter to anyone and you will receive a reply instantly (note:does not contribute to the story in any way shape or form)",
+            "stock":9999999999
+        }
+    }
 }
 
 chestlootsystem = {
@@ -64,9 +101,104 @@ chestlootsystem = {
 
 freed_villages = []
 
-resetdictionary= {"player stats":{"Strength":4,"Intelligence":2,"Money":0,"Health Points":125,"Slots Unlocked":3},
-                  "player default inventory":["Chopsticks","",""],
-                  "Village Shops":0}
+resetdictionary= {
+    "player stats":{
+        "Strength":4,
+        "Intelligence":2,
+        "Money":0,
+        "Health Points":125,
+        "Slots Unlocked":3
+    },
+    "player default inventory":["Chopsticks","",""],
+    "Village Shops":{
+        "Wellville":{
+            "Heal":{
+                "price":25,
+                "description":"The doctors of Wellville heal you to max health",
+                "stock":9999999
+            }
+        },
+        "Chemisville":{
+            "Tome of Damage":{
+                "price":50,
+                "description":"Increases your Strength when it is in your inventory",
+                "stock":3
+            },
+            "Tome of Max Health":{
+                "price":40,
+                "descripton":"Increases your defense when it is in your inventory",
+                "stock":3
+            },
+            "Tome of Defense":{
+                "price":20,
+                "description":"Increases your defense while in inventory",
+                "stock":3
+            }
+        },
+        "Gobapdular":{
+            "Useless Hay":{
+                "Price":10,
+                "description":"A bundle of a farmer's finest wheat",
+                "stock":10
+            }
+        },
+        "Kraftville":{
+            "Iron ingot":{
+                "price":15,
+                "description":"A refined metal straight from kraftsville caves",
+                "stock":10
+            }
+        },
+        "Bovisad":{
+            "Brisket":{
+                "price":60,
+                "description":"Increases your max health by 25hp permanently",
+                "stock":8},
+            "Pork":{
+                "price":30,
+                "description":"You gain 50hp",
+                "stock":15
+            }
+        },
+        "Kingdomsville":{
+            "Not Available":{
+                "price":0,
+                "description":"King Timmy is to lazy to make merchants sell anything",
+                "stock":0
+            }
+        },
+        "Escargot":{
+            "Longer Chopsticks":{
+                "price":50,
+                "description":"Weapon: is slightly stronger than default chopsticks but is otherwise useless",
+                "stock":1
+            }
+        },
+        "Litteratious":{
+            "Send mail":{
+                "price":10,
+                "description":"You can write a letter to anyone and you will receive a reply instantly (note:does not contribute to the story in any way shape or form)",
+                "stock":9999999999
+            }
+        }
+    }
+}
+weapons = ["Chopsticks","Axe","Longer Chopsticks","Bow"]
+weaponstats = {
+    "Chopsticks":{
+        "Damagemult":1
+    },
+    "Axe":{
+        "damagemult":2
+    },
+    "Longer Chopsticks":{
+        "damagemult":1.25
+    },
+    "Bow":{
+        "damagemult":1.5
+    }
+}
+
 
 name = ""
 
@@ -82,12 +214,33 @@ secret_codes = {}
 scoreboard = {}
 
 enemies_defeated = 0
+
+enemystats = {}
 #funct
 
-def PlayerTurn():
-    print("Insert stuff here")
+def PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats):
+    print("It is now your turn to attack!")
+    usableitems = []
+    for x in pinventory:
+        if x in weapons or x in consumables:
+            usableitems.append(x)
+    item = input(f"choose an item to use {usableitems}")
+    if item in pinventory:
+        if item in weapons:
+            hit_chance = random.randint(1,20)
+            if hit_chance >= 6:
+                print("Attack hit! rolling damage...")
+                damage = random.randint(1,10) * pstats["Strength"] * weaponstats[item]["damgagemult"]
+                estats["HP"] -= damage
+                print(f"You did {damage} damage!\nThe {estats.keys()} is at {estats["HP"]}")
+            else:
+                print("You missed")
+        elif item in consumables:
+            print("use consumable")
+    else:
+        print("pick a weapon that you have in your inventory")
 
-def MonsterTurn():
+def MonsterTurn(estats,pstats,edefeat):
     print("Insert stuff here")
 
 def BossTurn():
