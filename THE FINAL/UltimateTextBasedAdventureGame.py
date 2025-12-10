@@ -6,20 +6,35 @@ import time
 
 #Var
 
-player_stats = {"Strength":4,
-                "Intelligence":2,
-                "Defense":1,
-                "Money":0,
-                "Health Points":125,
-                "Slots Unlocked":3,
+player_stats = {
+    "Strength":4,
+    "Intelligence":2,
+    "Defense":1,
+    "Money":0,
+    "Health Points":125,
+    "Slots Unlocked":3,
+    "Max Health":125
     }
 player_inventory = ["Chopsticks","",""]
 
-enemies_stats={"Rat Burrower":{"Strength":5,"HP":50},
-        "Rat Soldier":{"Strength":7,"HP":100},
-        "Rat Archer":{"Strength":4,"HP":80},
-        "Rat Spartan":{"Strength":8,"HP":120}
-                       }
+enemies_stats={
+    "Rat Burrower":{
+        "Strength":5,
+        "HP":50
+    },
+    "Rat Soldier":{
+        "Strength":7,
+        "HP":100
+    },
+    "Rat Archer":{
+        "Strength":4,
+        "HP":80
+    },
+    "Rat Spartan":{
+        "Strength":8,
+        "HP":120
+    }
+}
 enemies = ["Rat Burrower", "Rat Soldier", "Rat Archer", "Rat Spartan"]
 village_shops = {
     "Wellville":{
@@ -107,7 +122,8 @@ resetdictionary= {
         "Intelligence":2,
         "Money":0,
         "Health Points":125,
-        "Slots Unlocked":3
+        "Slots Unlocked":3,
+        "Max Health":125
     },
     "player default inventory":["Chopsticks","",""],
     "Village Shops":{
@@ -199,7 +215,7 @@ weaponstats = {
     }
 }
 
-
+consumables = ["Brisket","Pork"]
 name = ""
 
 start_time = 0
@@ -232,16 +248,41 @@ def PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats):
                 print("Attack hit! rolling damage...")
                 damage = random.randint(1,10) * pstats["Strength"] * weaponstats[item]["damgagemult"]
                 estats["HP"] -= damage
-                print(f"You did {damage} damage!\nThe {estats.keys()} is at {estats["HP"]}")
+                print(f"You did {damage} damage!\nThe Foe is at {estats["HP"]}")
             else:
                 print("You missed")
         elif item in consumables:
-            print("use consumable")
+            if item == "Brisket":
+                pstats["Max Health"] += 25
+                pstats["Health Points"] += 25
+                pinventory.remove("Brisket")
+            elif item == "Pork":
+                if pstats["Health Points"] >= pstats["Max Health"] or pstats["Health Points"] <= 0:
+                    print("You cannot heal, You have Max health")
+                else:
+                    pstats["Health Points"] += 20
+                    pinventory.remove("Pork")
+            else:
+                print("Item functionality not added yet")
+        else:
+            print("Error item not found")
     else:
         print("pick a weapon that you have in your inventory")
+    return pstats, estats, pinventory
 
 def MonsterTurn(estats,pstats,edefeat):
-    print("Insert stuff here")
+    print("It is now the foe's turn to attack!")
+    hit_chance = random.randint(1,20)
+    if hit_chance >= 8:
+        print("Attack hit! rolling damage...")
+        damage = random.randint(1,10) * estats["Strength"]
+        pstats["HP"] -= damage
+        print(f"The enemy did {damage} damage!\nYou are at {pstats["HP"]}")
+    else:
+        print("The Foe missed missed")
+    if estats["Health Points"] <=0:
+        edefeat +=1
+    return pstats, estats, edefeat
 
 def BossTurn():
     print("Insert stuff here")
@@ -252,8 +293,12 @@ def ItemDropSystem():
 def OpenInventory():
     print("Insert stuff here")
 
-def CombatSystem():
-    print("Insert stuff here")
+def CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefeat):
+    player_loss = False
+    Enemydestroyed = edefeat
+    while not player_loss and Enemydestroyed == edefeat:
+        pstats, estats, pinventory = PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats)
+        pstats, estats, edefeat = MonsterTurn(estats,pstats,edefeat)
 
 def Chestsystem():
     print("Insert stuff here")
