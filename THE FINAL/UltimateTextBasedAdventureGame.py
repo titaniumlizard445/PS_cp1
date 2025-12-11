@@ -7,6 +7,7 @@ import time
 #Var
 
 player_stats = {
+    "Name":"John Jonathan Johnson",
     "Strength":4,
     "Intelligence":2,
     "Defense":1,
@@ -20,21 +21,41 @@ player_inventory = ["Chopsticks","",""]
 enemies_stats={
     "Rat Burrower":{
         "Strength":5,
-        "HP":50
+        "HP":50,
+        "Boss":False
     },
     "Rat Soldier":{
         "Strength":7,
-        "HP":100
+        "HP":100,
+        "Boss":False
     },
     "Rat Archer":{
         "Strength":4,
-        "HP":80
+        "HP":80,
+        "Boss":False
     },
     "Rat Spartan":{
         "Strength":8,
-        "HP":120
+        "HP":120,
+        "Boss":False
     }
 }
+
+boss_stats = {
+    "Rat Dictator":{
+        "Strength":15,
+        "HP":250,
+        "Boss":True
+    },
+    "George":{
+        "Strength":20,
+        "HP":300,
+        "Boss":True
+    }
+}
+
+
+
 enemies = ["Rat Burrower", "Rat Soldier", "Rat Archer", "Rat Spartan"]
 village_shops = {
     "Wellville":{
@@ -98,6 +119,10 @@ village_shops = {
             "price":50,
             "description":"Weapon: is stronger than default chopsticks but is otherwise useless",
             "stock":1
+        },
+        "Chainsaw":{
+            "price":100,
+            "description":"Weapon: Highest damage output in game"
         }
     },
     "Litteratious":{
@@ -111,13 +136,15 @@ village_shops = {
 
 chestlootsystem = {
     #There is repeats of the same items for skewing chance
-    "items":["Money","John's Axe","Pork","Money","Intelligence","Intelligence","Intelligence","Intelligence","Intelligence","Money","Money","Intelligence"]
+    "normal items":["Money","Pork","Money","Money","Money","Brisket"],
+    "Secret Chest loot":["Money","John's Axe","Pork","Money","Intelligence","Intelligence","Intelligence","Intelligence","Intelligence","Money","Money","Intelligence"]
 }
 
 freed_villages = []
 
 resetdictionary= {
     "player stats":{
+        "Name":"John Jonathan Johnson",
         "Strength":4,
         "Intelligence":2,
         "Money":0,
@@ -230,7 +257,7 @@ secret_codes = {}
 scoreboard = {}
 
 enemies_defeated = 0
-
+bosses_defeated = 0
 enemystats = {}
 #funct
 
@@ -284,33 +311,83 @@ def MonsterTurn(estats,pstats,edefeat):
         edefeat +=1
     return pstats, estats, edefeat
 
-def BossTurn():
-    print("Insert stuff here")
+def BossTurn(bstats,pstats,bdefeat):
+    print("It is now the bosses turn to attack!")
+    hit_chance = random.randint(1,20)
+    if hit_chance >= 6:
+        print("Attack hit! rolling damage...")
+        damage = random.randint(1,10) * bstats["Strength"]
+        pstats["HP"] -= damage
+        print(f"The Boss did {damage} damage!\nYou are at {pstats["HP"]}")
+    else:
+        print("The Foe missed missed")
+    if bstats["Health Points"] <=0:
+        bdefeat +=1
+    return pstats, bstats, bdefeat
 
-def ItemDropSystem():
-    print("Insert stuff here")
+def ItemDropSystem(items,pstats,pinventory):
+    randomitem = random.choice(items["normal items"])
+    if randomitem == "Pork" or randomitem == "Brisket" or randomitem == "John's Axe":
+        pinventory = pinventory.append(randomitem)
+    elif randomitem == "Money":
+        randommoney = random.randint(1,50)
+        pstats["Money"] += randommoney
+    elif randomitem == "Intelligence":
+        randomintel = random.randint(1,40)
+        pstats["Intelligence"] += randomintel
+    else:
+        print("random item generator failed")
 
-def OpenInventory():
-    print("Insert stuff here")
+def OpenInventory(pinventory):
+    print(f"Your inventory consists of {pinventory}")
 
-def CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefeat):
+def CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefeat,bdefeat):
     player_loss = False
     Enemydestroyed = edefeat
+    bossdestroyed = bdefeat
     while not player_loss and Enemydestroyed == edefeat:
-        pstats, estats, pinventory = PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats)
-        pstats, estats, edefeat = MonsterTurn(estats,pstats,edefeat)
+        if estats["Boss"]:
+            pstats, estats, pinventory = PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats)
+            if pstats["HP"] <= 0:
+                player_loss = True
+                continue
+            if bossdestroyed < bdefeat:
+                continue
+            time.sleep(5)
+            pstats, estats, bdefeat = BossTurn(estats,pstats,bdefeat)
+            if pstats["HP"] <= 0:
+                player_loss = True
+                continue
+            if bossdestroyed < bdefeat:
+                continue
+            time.sleep(5)
+        else:
+            pstats, estats, pinventory = PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats)
+            if pstats["HP"] <= 0:
+                player_loss = True
+                continue
+            if Enemydestroyed < edefeat:
+                continue
+            time.sleep(5)
+            pstats, estats, edefeat = MonsterTurn(estats,pstats,edefeat)
+            if pstats["HP"] <= 0:
+                player_loss = True
+                continue
+            if Enemydestroyed < edefeat:
+                continue
+            time.sleep(5)
+    return pstats, pinventory, bdefeat, edefeat, player_loss
 
-def Chestsystem():
-    print("Insert stuff here")
 
 def Rest():
     print("John slept and remained unproductive the whole night")
 
-def FreeVillage():
-    print("Put combat function with for x3 and other stuff")
+def FreeVillage(pstats,pinventory,weaponstats,weapons,consumables,estats,edefeat,bdefeat):
+    pstats, pinventory, bdefeat,edefeat,player_loss = CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefeat,bdefeat)
+    
 
 #take in dictionary for items and village be accessed
-def UseShop():
+def UseShop(shop_dict):
     print("Insert stuff here")
 
 def Credits():
