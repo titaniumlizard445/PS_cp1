@@ -226,7 +226,7 @@ resetdictionary= {
         }
     }
 }
-weapons = ["Chopsticks","Axe","Longer Chopsticks","Bow"]
+Weapons = ["Chopsticks","Axe","Longer Chopsticks","Bow"]
 weaponstats = {
     "Chopsticks":{
         "damagemult":1
@@ -263,9 +263,11 @@ chest = []
 
 def PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats):
     print("It is now your turn to attack!")
-    usableitems = []
+    usableitems = [""]
     for x in pinventory:
-        if x in weapons or x in consumables:
+        if x in weapons:
+            usableitems = usableitems.append(x)
+        elif x in consumables:
             usableitems = usableitems.append(x)
     item = input(f"choose an item to use {usableitems}").strip()
     if item in pinventory:
@@ -393,13 +395,13 @@ def CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefea
 def Rest():
     print("John slept and remained unproductive the whole night")
 
-def FreeVillage(pstats,pinventory,weaponstats,weapons,consumables,edefeat,bdefeat,items,monsters):
+def FreeVillage(pstats,pinventory,weaponstats,weapons,consumables,edefeat,bdefeat,items,monsters,estats):
     win_counter = 0
     pre_ded_enemies = edefeat
     while win_counter < 3:
         enemychosen = random.choice(monsters)
         estats = estats[enemychosen]
-        print(f"You are going to fight a {enemychosen} it has {estats["HP"]}Health and has {estats["damage"]} points of strength")
+        print(f"You are going to fight a {enemychosen} it has {estats["HP"]}Health and has {estats["Strength"]} points of strength")
         pstats, pinventory, bdefeat,edefeat,player_loss = CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefeat,bdefeat,items)
         if player_loss == True:
             print("You Lose, (death during Enemy rush)")
@@ -486,7 +488,7 @@ def JohnsHouse(pstats,pinventory,chest):
                 if pinventory < pstats["Slots Unlocked"]:
                     item_to_move = input(f"What item would you like to move to your inventory (item in the chest: {chest})").strip()
                     if item_to_move in chest:
-                         pinventory = pinventory.append(item_to_move)
+                        pinventory = pinventory.append(item_to_move)
                         chest.remove(item_to_move)
                         print("Item successfully moved")
                     else:
@@ -518,13 +520,13 @@ def JohnsHouse(pstats,pinventory,chest):
             time.sleep(5)
     return pstats, pinventory, chest
 #(parameters) take in name and dictionary with info and villages defeated
-def DefaultVillage(free_village,shop_dict,village,pinventory,pstats,weaponstats,weapons,consumables,edefeat,bdefeat,items,monsters):
+def DefaultVillage(free_village,shop_dict,village,pinventory,pstats,weaponstats,weapons,consumables,edefeat,bdefeat,items,monsters,estats):
     visiting = True
     while visiting:
         print(f"Welcome to {village}")
         if village not in free_village:
             print("This village has not become free of rat power yet \n You must free it. (defeat 3 monsters)")
-            pstats, pinventory,edefeat,player_loss = FreeVillage(pstats,pinventory,weaponstats,weapons,consumables,edefeat,bdefeat,items,monsters)
+            pstats, pinventory,edefeat,player_loss = FreeVillage(pstats,pinventory,weaponstats,weapons,consumables,edefeat,bdefeat,items,monsters,estats)
             if player_loss == False:
                 print("You may now use access shops and other village activities")
                 free_village = free_village.append(village)
@@ -571,6 +573,12 @@ while True:
     start_time = time.time()
     end_time = 0.0
     game_time = 0.0
+    endgame = False
+    player_loss = False
+    village_shops = resetdictionary["Village Shops"]
+    player_stats = resetdictionary["player stats"]
+    player_inventory = ["Chopsticks"]
+    player_win = False
     #game
     while True:
         print(f"John was a humble woodcutter who lived alone in a weather-beaten log cabin deep in the heart of the vast Greenwood Forest. The nearest village lay fifty miles away—far enough that John could go months without seeing another human soul, which suited him fine.\n \nHe had his trees, his fireplace, and his meals eaten with his trusty pair of chopsticks—a habit picked up from the rare Asian merchants who wandered close enough for trade. His only friend in the world was George—a wandering tinkerer who visited every few months with stories, odd inventions, and a warm smile that John secretly treasured. \n \n The Day Everything ChangedOne crisp autumn morning, John marched into the woods carrying his well-used axe, ready to split logs for winter. But fate had other plans. A horse's frantic gallop broke the forest silence. A messenger—mud-stained, wide-eyed—rode up and thrust a rolled parchment into John's hands. \n \n “The eight villages to the south have fallen! Invaded by mutant rats—thousands of them! And… and your friend George was taken.”\n \n The messenger fled almost immediately, as if the forest itself were unsafe. John's heart pounded with panic and anger. George—the one person who cared about him—captured by rats? The thought didn't make sense. But before John could process the message, he heard chittering behind him. He spun around. \n \nToo late. A swarm of grotesque, oversized rats leapt from the underbrush, their eyes glowing with eerie green light. They rushed him like a furry tidal wave, squeaking with unnatural coordination. John swung his axe wildly—but they overwhelmed him. He felt tiny claws on his arms, his legs, his shoulders. In seconds they wrenched the axe from his grip and vanished into the forest with it, carrying the iron-headed tool like a trophy. John was left panting, weaponless, and furious.")
@@ -583,7 +591,7 @@ while True:
                 player_stats, player_inventory, chest = JohnsHouse(player_stats,player_inventory,chest)
             elif choice == "BF":
                 if len(freed_villages) == 8:
-                    player_stats, player_inventory, bosses_defeat, enemies_defeat, player_loss, player_win = BastilliaFortuica(player_stats,player_inventory,weaponstats,weapons,consumables,boss_stats,enemies_defeated,bosses_defeated,chestlootsystem)
+                    player_stats, player_inventory, bosses_defeat, enemies_defeat, player_loss, player_win = BastilliaFortuica(player_stats,player_inventory,weaponstats,Weapons,consumables,boss_stats,enemies_defeated,bosses_defeated,chestlootsystem,enemies)
             elif choice in village_choices:
                 if choice == "W":
                     village_chosen = "Wellville"
@@ -603,7 +611,7 @@ while True:
                     village_chosen = "Litteratious"
                 else:
                     print("Village Error ocurred")
-                player_stats, player_inventory, village_shops, enemies_defeated, player_loss,freed_villages = DefaultVillage(freed_villages,village_shops,village_chosen,player_inventory,player_stats,weaponstats,weapons,consumables,enemies_defeated,bosses_defeat,chestlootsystem,enemies_stats)
+                player_stats, player_inventory, village_shops, enemies_defeated, player_loss,freed_villages = DefaultVillage(freed_villages,village_shops,village_chosen,player_inventory,player_stats,weaponstats,Weapons,consumables,enemies_defeated,bosses_defeated,chestlootsystem,enemies,enemies_stats)
             else:
                 print("Invalid input please try again")
                 continue
@@ -618,7 +626,7 @@ while True:
         #scoreboard
         if isinstance(end_time,int):
             game_time = end_time - start_time
-        scoreboard.append(Name:{"Time":str(game_time)+"seconds","Enemies defeated":enemies_defeated,"Intelligence":player_stats["Intelligence"]})
+        scoreboard.append({Name:{"Time":str(game_time)+" seconds","Enemies defeated":enemies_defeated,"Intelligence":player_stats["Intelligence"]}})
         print("Scoreboard:")
         counter = 0
         for x in scoreboard:
