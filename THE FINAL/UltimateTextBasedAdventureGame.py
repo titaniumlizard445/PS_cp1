@@ -10,7 +10,6 @@ player_stats = {
     "Name":"John Jonathan Johnson",
     "Strength":6,
     "Intelligence":2,
-    "Defense":1,
     "Money":0,
     "Health Points":125,
     "Slots Unlocked":5,
@@ -364,6 +363,9 @@ def OpenInventory(pinventory):
     print(f"Your inventory consists of {pinventory}")
 
 def CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefeat,bdefeat,items):
+    help2 = input("Would You like an explaination of what each of the items do? y/n \n Enter Here:").strip()
+    if help2 == "y":
+        print("There are two types of items in the combat situation, first there are weapons, a few examples would be, 'Chopsticks','Longer Chopsticks','John's Axe', and 'Chainsaw'\n Next there are consumables here are some consumables and what they do, \nWhen used: Brisket increases you max health so you can take more attacks until you die\nWhen used: Pork increases the health you have right now but does not go past max health\nWhen used: the Tome of max health increases max health like the brisket\nWhen used: the Tome of Damage: Increases your strength when used so you do more damage to enemies\nWhen you want to use a item type it EXACTLY as it is written when displayed in your inventory. Now go defeat your enemy\n")
     player_loss = False
     Enemydestroyed = edefeat
     bossdestroyed = bdefeat
@@ -376,7 +378,7 @@ def CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefea
             if bossdestroyed < bdefeat:
                 bdefeat += 1
                 continue
-            time.sleep(3)
+            time.sleep(1.5)
             pstats, estats, bdefeat = BossTurn(estats,pstats,bdefeat)
             if pstats["Health Points"] <= 0:
                 player_loss = True
@@ -384,7 +386,7 @@ def CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefea
             if bossdestroyed < bdefeat:
                 bdefeat += 1
                 continue
-            time.sleep(3)
+            time.sleep(1.5)
         else:
             pstats, estats, pinventory = PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats)
             if pstats["Health Points"] <= 0:
@@ -393,7 +395,7 @@ def CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefea
             if Enemydestroyed < edefeat:
                 edefeat+=1
                 continue
-            time.sleep(3)
+            time.sleep(1.5)
             pstats, estats, edefeat = MonsterTurn(estats,pstats,edefeat)
             if pstats["Health Points"] <= 0:
                 player_loss = True
@@ -401,7 +403,7 @@ def CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefea
             if Enemydestroyed < edefeat:
                 edefeat += 1
                 continue
-            time.sleep(3)
+            time.sleep(1.5)
     if player_loss == False:
         pinventory.append(ItemDropSystem(items,pstats,pinventory,"Normal"))
     return pstats, pinventory, bdefeat, edefeat, player_loss
@@ -642,7 +644,6 @@ while True:
     print(f"Welcome to possibly the greatest text based adventure game you will see today \nIf you care about your score: \nthere are three stats that will be recorded on the scoreboard \n1)Your Time \n2)The Number of Enemies you Defeated \n3)Your Intelligence stat \n \n Now the game can begin \n")
     village_chosen = ""
     Name = input("What is your name? \nEnter your name here: ").strip()
-    start_time = time.time()
     end_time = 0.0
     game_time = 0.0
     endgame = False
@@ -653,11 +654,18 @@ while True:
     player_win = False
     #game
     while True:
-        print(f"John was a humble woodcutter who lived alone in a weather-beaten log cabin deep in the heart of the vast Greenwood Forest. The nearest village lay fifty miles away—far enough that John could go months without seeing another human soul, which suited him fine.\n \nHe had his trees, his fireplace, and his meals eaten with his trusty pair of chopsticks—a habit picked up from the rare Asian merchants who wandered close enough for trade. His only friend in the world was George—a wandering tinkerer who visited every few months with stories, odd inventions, and a warm smile that John secretly treasured. \n \n The Day Everything ChangedOne crisp autumn morning, John marched into the woods carrying his well-used axe, ready to split logs for winter. But fate had other plans. A horse's frantic gallop broke the forest silence. A messenger—mud-stained, wide-eyed—rode up and thrust a rolled parchment into John's hands. \n \n “The eight villages to the south have fallen! Invaded by mutant rats—thousands of them! And… and your friend George was taken.”\n \n The messenger fled almost immediately, as if the forest itself were unsafe. John's heart pounded with panic and anger. George—the one person who cared about him—captured by rats? The thought didn't make sense. But before John could process the message, he heard chittering behind him. He spun around. \n \nToo late. A swarm of grotesque, oversized rats leapt from the underbrush, their eyes glowing with eerie green light. They rushed him like a furry tidal wave, squeaking with unnatural coordination. John swung his axe wildly—but they overwhelmed him. He felt tiny claws on his arms, his legs, his shoulders. In seconds they wrenched the axe from his grip and vanished into the forest with it, carrying the iron-headed tool like a trophy. John was left panting, weaponless, and furious.")
+        print(f"John was a humble woodcutter who lived alone in a weather-beaten log cabin deep in the heart of the vast Greenwood Forest. The nearest village lay fifty miles away—far enough that John could go months without seeing another human soul, which suited him fine.\n \nHe had his trees, his fireplace, and his meals eaten with his trusty pair of chopsticks—a habit picked up from the rare Asian merchants who wandered close enough for trade. His only friend in the world was George—a wandering tinkerer who visited every few months with stories, odd inventions, and a warm smile that John secretly treasured. \n \n The Day Everything ChangedOne crisp autumn morning, John marched into the woods carrying his well-used axe, ready to split logs for winter. But fate had other plans. A horse's frantic gallop broke the forest silence. A messenger—mud-stained, wide-eyed—rode up and thrust a rolled parchment into John's hands. \n \n “The eight villages to the south have fallen! Invaded by mutant rats—thousands of them! And… and your friend George was taken.”\n \n The messenger fled almost immediately, as if the forest itself were unsafe. John's heart pounded with panic and anger. George—the one person who cared about him—captured by rats? The thought didn't make sense. But before John could process the message, he heard chittering behind him. He spun around. \n \nToo late. A swarm of grotesque, oversized rats leapt from the underbrush, their eyes glowing with eerie green light. They rushed him like a furry tidal wave, squeaking with unnatural coordination. John swung his axe wildly—but they overwhelmed him. He felt tiny claws on his arms, his legs, his shoulders. In seconds they wrenched the axe from his grip and vanished into the forest with it, carrying the iron-headed tool like a trophy. John was left panting, weaponless, and furious.\n")
         TutorialIntroduction()
         endgame == False
+        player_loss = False
+        village_shops = resetdictionary["Village Shops"]
+        player_stats = resetdictionary["player stats"]
+        player_inventory = ["Chopsticks"]
+        player_win = False
+        freed_villages = []
+        start_time = time.time()
         while not endgame:
-            print(f"Villages: John’s House (JH), Wellville (W), Chemisville (C), Gobapdular (G), Kraftville (KR), Bovisad (B), Kingdomsville (KG), Escargot (E), Litteratious (L), Bastillia Fortuica (You cannot enter unless all other villages have been explored) (BF)\nChoose a village (or John's House) to explore!")
+            print(f"\nPlaces to go: John’s House (JH), Wellville (W), Chemisville (C), Gobapdular (G), Kraftville (KR), Bovisad (B), Kingdomsville (KG), Escargot (E), Litteratious (L), Bastillia Fortuica (You cannot enter unless all other villages have been explored) (BF) Help Button, (H)\nChoose a place to explore!")
             choice = input("Enter Choice here: ").strip()
             if choice == "JH":
                 player_stats, player_inventory, chest = JohnsHouse(player_stats,player_inventory,chest,Codes,chestlootsystem)
@@ -687,6 +695,25 @@ while True:
                     village_chosen = "Escargot"
                 elif choice == "L":
                     village_chosen = "Litteratious"
+                elif choice == "H":
+                    print("\n \nHelp Menu consists of defining stats (DS), combat functions (CF), Shopping (SH), Places (P)")
+                    goodanswer = False
+                    while not goodanswer:
+                        helpchoice = input("Enter Choice here: ").strip()
+                        if helpchoice == "DS" or helpchoice == "CF" or helpchoice == "SH" or helpchoice == "P":
+                            goodanswer = True
+                        else:
+                            print("Please input one of the options in ()")
+                    if helpchoice == "DS":
+                        print("The stats that the player has is Strength, which increases your damage output in battle,\n Name, which is used to tell the player what John's full name is,\n Intelligence, which makes you sound smarter when talking to the shop NPC,\n Money, which is used to buy items from village shops,\n Health Points, which is used to tell player their actual health,\n Slots Unlocked, tells the player how many inventory slots they can use at the current moment, \n Max Health, It is the highest amount of health the player can receive in the game but is not what the actual player health is. \n \n The stats of monsters is Strength and Health Points, strength increases damage and Health Points is the total amount of health they actually have\n\n")
+                    elif helpchoice == "CF":
+                        print("\nYou can do a few things when fighting in combat. The way you execute combat functions is by typing the name of the item you want to use, it can either be a \n1) Weapon, which will execute an attack on the enemy or \n2) It can be a consumable which is used to increase health or damage but DOES NOT EXECUTE AN ATTACK against the enemy. \n You should always type the item that you want to use exactly as it is shown when it displays the usable items ex. inventory:'Brisket','Chopsticks' input:Brisket\n\n")
+                    elif helpchoice == "SH":
+                        print("\nShops are very simple to understand, you cannot access them if your inventory is full and you can't buy anything if you have too little money. to buy an item you type the name of the item EXACTLY AS IT IS WRITTEN for the transaction to run smoothly. You then can use your newly obtained item in battle or store it in a chest.\n\n")
+                    elif helpchoice == "P":
+                        print("\nYou have a 10 options of places to go to,\n1) You can go to John's House which allows you to move items in and out of your inventory and see what your health, strength etc. 2)Bastillia Fortuica, This is the final zone of the game and is heavily discouraged to enter until all of the other villages have been explored thorougly. 3)Any other village, These areas must be unlocked by first fighting off 3 monsters and then you can shop, fight a monster for stuff, or leave the village.\n\n")
+                    else:
+                        print("A error occurred in help menu")
                 else:
                     print("Village Error ocurred")
                 player_stats, player_inventory, village_shops, enemies_defeated, player_loss,freed_villages = DefaultVillage(freed_villages,village_shops,village_chosen,player_inventory,player_stats,weaponstats,Weapons,consumables,enemies_defeated,bosses_defeated,chestlootsystem,enemies,enemies_stats)
