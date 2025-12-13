@@ -8,12 +8,12 @@ import time
 
 player_stats = {
     "Name":"John Jonathan Johnson",
-    "Strength":4,
+    "Strength":6,
     "Intelligence":2,
     "Defense":1,
     "Money":0,
     "Health Points":125,
-    "Slots Unlocked":3,
+    "Slots Unlocked":5,
     "Max Health":125
     }
 player_inventory = ["Chopsticks"]
@@ -21,22 +21,22 @@ player_inventory = ["Chopsticks"]
 enemies_stats={
     "Rat Burrower":{
         "Strength":5,
-        "HP":50,
+        "Health Points":50,
         "Boss":False
     },
     "Rat Soldier":{
         "Strength":7,
-        "HP":100,
+        "Health Points":100,
         "Boss":False
     },
     "Rat Archer":{
         "Strength":4,
-        "HP":80,
+        "Health Points":80,
         "Boss":False
     },
     "Rat Spartan":{
         "Strength":8,
-        "HP":120,
+        "Health Points":120,
         "Boss":False
     }
 }
@@ -44,12 +44,12 @@ enemies_stats={
 boss_stats = {
     "Rat Dictator":{
         "Strength":15,
-        "HP":250,
+        "Health Points":250,
         "Boss":True
     },
     "George":{
         "Strength":20,
-        "HP":300,
+        "Health Points":300,
         "Boss":True
     }
 }
@@ -68,19 +68,14 @@ village_shops = {
     "Chemisville":{
         "Tome of Damage":{
             "price":50,
-            "description":"Increases your Strength when it is in your inventory",
+            "description":"Increases your Strength permanently by 4 when used",
             "stock":3
         },
         "Tome of Max Health":{
             "price":40,
-            "descripton":"Increases your defense when it is in your inventory",
+            "description":"Increases your defense permanently by 30 when used",
             "stock":3
         },
-        "Tome of Defense":{
-            "price":20,
-            "description":"Increases your defense while in inventory",
-            "stock":3
-        }
     },
     "Gobapdular":{
         "Useless Hay":{
@@ -99,11 +94,11 @@ village_shops = {
     "Bovisad":{
         "Brisket":{
             "price":60,
-            "description":"Increases your max health by 25hp permanently",
+            "description":"Increases your max health by 25Health Points permanently",
             "stock":8},
         "Pork":{
             "price":30,
-            "description":"You gain 50hp",
+            "description":"You gain 50Health Points",
             "stock":15
         }
     },
@@ -136,8 +131,8 @@ village_shops = {
 
 chestlootsystem = {
     #There is repeats of the same items for skewing chance
-    "normal items":["Money","Pork","Money","Money","Money","Brisket"],
-    "Secret Chest loot":["Money","John's Axe","Pork","Money","Intelligence","Intelligence","Intelligence","Intelligence","Intelligence","Money","Money","Intelligence"]
+    "normal items":["Money","Pork","Money","Money","Money","Brisket","Money","Money","Money","Money","Money","Money","Brisket","Brisket","Brisket","Pork","Pork","Pork","John's Axe","Intelligence"],
+    "Secret Chest loot":["Money","John's Axe","Pork","Money","Intelligence","Intelligence","Intelligence","Intelligence","Intelligence","Money","Money","Intelligence","Item Slots","Item Slots","Item Slots"]
 }
 
 freed_villages = []
@@ -145,11 +140,11 @@ freed_villages = []
 resetdictionary= {
     "player stats":{
         "Name":"John Jonathan Johnson",
-        "Strength":4,
+        "Strength":6,
         "Intelligence":2,
         "Money":0,
         "Health Points":125,
-        "Slots Unlocked":3,
+        "Slots Unlocked":5,
         "Max Health":125
     },
     "player default inventory":["Chopsticks"],
@@ -164,19 +159,14 @@ resetdictionary= {
         "Chemisville":{
             "Tome of Damage":{
                 "price":50,
-                "description":"Increases your Strength when it is in your inventory",
+                "description":"Increases your Strength permanently when used",
                 "stock":3
             },
             "Tome of Max Health":{
                 "price":40,
-                "descripton":"Increases your defense when it is in your inventory",
+                "description":"Increases your defense permanently when used",
                 "stock":3
             },
-            "Tome of Defense":{
-                "price":20,
-                "description":"Increases your defense while in inventory",
-                "stock":3
-            }
         },
         "Gobapdular":{
             "Useless Hay":{
@@ -195,11 +185,11 @@ resetdictionary= {
         "Bovisad":{
             "Brisket":{
                 "price":60,
-                "description":"Increases your max health by 25hp permanently",
+                "description":"Increases your max health by 25Health Points permanently",
                 "stock":8},
             "Pork":{
                 "price":30,
-                "description":"You gain 50hp",
+                "description":"You gain 50Health Points",
                 "stock":15
             }
         },
@@ -226,12 +216,12 @@ resetdictionary= {
         }
     }
 }
-Weapons = ["Chopsticks","Axe","Longer Chopsticks","Bow"]
+Weapons = ["Chopsticks","John's Axe","Longer Chopsticks","Bow"]
 weaponstats = {
     "Chopsticks":{
         "damagemult":1
     },
-    "Axe":{
+    "John's Axe":{
         "damagemult":2
     },
     "Longer Chopsticks":{
@@ -242,7 +232,7 @@ weaponstats = {
     }
 }
 
-consumables = ["Brisket","Pork"]
+consumables = ["Brisket","Pork","Tome of Damage","Tome of Max Health","Tome of Defense"]
 name = ""
 
 start_time = 0
@@ -251,7 +241,6 @@ end_time = 0
 total_defeated = 0
 
 #Village Name : Codes: reward/puzzle
-secret_codes = {}
 
 #score board contains names, points and times
 scoreboard = {}
@@ -259,38 +248,54 @@ scoreboard = {}
 enemies_defeated = 0
 bosses_defeated = 0
 chest = []
+Codes = ["Pisbestletter","Pakistan","JohnTierListIsNotReal","John","BestGame","DevIsCoolest"]
 #funct
 
 def PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats):
-    print("It is now your turn to attack!")
-    usableitems = [""]
+    print("\nIt is now your turn to attack!")
+    usableitems = []
     for x in pinventory:
         if x in weapons:
-            usableitems = usableitems.append(x)
+            usableitems.append(x)
         elif x in consumables:
-            usableitems = usableitems.append(x)
-    item = input(f"choose an item to use {usableitems}").strip()
+            usableitems.append(x)
+    item = ""
+    while item not in usableitems:
+        item = input(f"choose an item to use {usableitems}: ").strip()
+        if item not in usableitems:
+            print(f"{item} not in inventory please try again")
     if item in pinventory:
         if item in weapons:
             hit_chance = random.randint(1,20)
-            if hit_chance >= 6:
+            if hit_chance >= 4:
                 print("Attack hit! rolling damage...")
                 damage = random.randint(1,10) * pstats["Strength"] * weaponstats[item]["damagemult"]
-                estats["HP"] -= damage
-                print(f"You did {damage} damage!\nThe Foe is at {estats["HP"]}")
+                estats["Health Points"] -= damage
+                print(f"You did {damage} damage!\nThe Foe is at {estats["Health Points"]}HP\n")
             else:
-                print("You missed")
+                print("You missed\n")
         elif item in consumables:
             if item == "Brisket":
                 pstats["Max Health"] += 25
                 pstats["Health Points"] += 25
                 pinventory.remove("Brisket")
+                print("You have gained 25 Max health \n")
             elif item == "Pork":
                 if pstats["Health Points"] >= pstats["Max Health"] or pstats["Health Points"] <= 0:
                     print("You cannot heal, You have Max health")
                 else:
                     pstats["Health Points"] += 20
                     pinventory.remove("Pork")
+                    print("You have gained 20HP\n")
+            elif item == "Tome of Damage":
+                pstats["Strength"] += 4
+                print("Strength Increased \n")
+                pinventory.remove(item)
+            elif item == "Tome of Max Health":
+                pstats["Max Health"] += 25
+                pstats["Health Points"] = pstats["Max Health"]
+                pinventory.remove(item)
+                print("Max Health Increased \n")
             else:
                 print("Item functionality not added yet")
         else:
@@ -304,11 +309,11 @@ def MonsterTurn(estats,pstats,edefeat):
     hit_chance = random.randint(1,20)
     if hit_chance >= 8:
         print("Attack hit! rolling damage...")
-        damage = random.randint(1,10) * estats["Strength"] * edefeat * 0.1
-        pstats["HP"] -= damage
-        print(f"The enemy did {damage} damage!\nYou are at {pstats["HP"]}")
+        damage = random.randint(1,10) * estats["Strength"] * edefeat * 0.02
+        pstats["Health Points"] -= damage
+        print(f"The enemy did {damage} damage!\nYou are at {pstats["Health Points"]}HP")
     else:
-        print("The Foe missed missed")
+        print("The Foe missed")
     if estats["Health Points"] <=0:
         edefeat +=1
     return pstats, estats, edefeat
@@ -319,10 +324,10 @@ def BossTurn(bstats,pstats,bdefeat):
     if hit_chance >= 6:
         print("Attack hit! rolling damage...")
         damage = random.randint(1,10) * bstats["Strength"]
-        pstats["HP"] -= damage
-        print(f"The Boss did {damage} damage!\nYou are at {pstats["HP"]}")
+        pstats["Health Points"] -= damage
+        print(f"The Boss did {damage} damage!\nYou are at {pstats["Health Points"]}HP")
     else:
-        print("The Foe missed missed")
+        print("The Foe missed")
     if bstats["Health Points"] <=0:
         bdefeat +=1
     return pstats, bstats, bdefeat
@@ -331,18 +336,27 @@ def ItemDropSystem(items,pstats,pinventory,loottype):
     if loottype == "Normal":
         randomitem = random.choice(items["normal items"])
     elif loottype == "Secret":
-        randomitem = random.random.choice(items["Secret Chest loot"])
+        randomitem = random.choice(items["Secret Chest loot"])
     if randomitem == "Money":
         randommoney = random.randint(1,50)
         pstats["Money"] += randommoney
+        print(f"You got {randommoney} Money!")
     elif randomitem == "Intelligence":
             randomintel = random.randint(1,40)
-            pstats["Intelligence"] += randomintel    
+            pstats["Intelligence"] += randomintel
+            print(f"You gained {randomintel} Intelligence!")    
     elif len(pinventory) < pstats["Slots Unlocked"]:
-        if randomitem == "Pork" or randomitem == "Brisket" or randomitem == "John's Axe":
-            pinventory = pinventory.append(randomitem)
+        if randomitem == "Pork" or randomitem == "Brisket": 
+            pinventory.append(randomitem)
+            print("You have obtained a consumable")
+        elif randomitem == "John's Axe":
+            pinventory.append(randomitem)
+            print("You have obtained a John's Axe!")
         else:
             print("random item generator failed")
+    elif randomitem == "Item Slots":
+        pstats["Slots Unlocked"] += 1
+        print("You have gained a item slot!")
     else:
         print(f"You have a filled inventory, You may not hold anymore items. (items slots {pstats["Slots Unlocked"]})")
 
@@ -356,40 +370,40 @@ def CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefea
     while not player_loss and Enemydestroyed == edefeat and bossdestroyed == bdefeat:
         if estats["Boss"]:
             pstats, estats, pinventory = PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats)
-            if pstats["HP"] <= 0:
+            if pstats["Health Points"] <= 0:
                 player_loss = True
                 continue
             if bossdestroyed < bdefeat:
                 bdefeat += 1
                 continue
-            time.sleep(5)
+            time.sleep(3)
             pstats, estats, bdefeat = BossTurn(estats,pstats,bdefeat)
-            if pstats["HP"] <= 0:
+            if pstats["Health Points"] <= 0:
                 player_loss = True
                 continue
             if bossdestroyed < bdefeat:
                 bdefeat += 1
                 continue
-            time.sleep(5)
+            time.sleep(3)
         else:
             pstats, estats, pinventory = PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats)
-            if pstats["HP"] <= 0:
+            if pstats["Health Points"] <= 0:
                 player_loss = True
                 continue
             if Enemydestroyed < edefeat:
                 edefeat+=1
                 continue
-            time.sleep(5)
+            time.sleep(3)
             pstats, estats, edefeat = MonsterTurn(estats,pstats,edefeat)
-            if pstats["HP"] <= 0:
+            if pstats["Health Points"] <= 0:
                 player_loss = True
                 continue
             if Enemydestroyed < edefeat:
                 edefeat += 1
                 continue
-            time.sleep(5)
+            time.sleep(3)
     if player_loss == False:
-        pinventory = pinventory.append(ItemDropSystem(items,pstats,pinventory,"Normal"))
+        pinventory.append(ItemDropSystem(items,pstats,pinventory,"Normal"))
     return pstats, pinventory, bdefeat, edefeat, player_loss
 
 def Rest():
@@ -399,10 +413,33 @@ def FreeVillage(pstats,pinventory,weaponstats,weapons,consumables,edefeat,bdefea
     win_counter = 0
     pre_ded_enemies = edefeat
     while win_counter < 3:
+        allestats = estats
+        allestats = {
+            "Rat Burrower":{
+                "Strength":5,
+                "Health Points":50,
+                "Boss":False
+            },
+            "Rat Soldier":{
+                "Strength":7,
+                "Health Points":100,
+                "Boss":False
+            },
+            "Rat Archer":{
+                "Strength":4,
+                "Health Points":80,
+                "Boss":False
+            },
+            "Rat Spartan":{
+                "Strength":8,
+                "Health Points":120,
+                "Boss":False
+            }
+        }
         enemychosen = random.choice(monsters)
-        estats = estats[enemychosen]
-        print(f"You are going to fight a {enemychosen} it has {estats["HP"]}Health and has {estats["Strength"]} points of strength")
-        pstats, pinventory, bdefeat,edefeat,player_loss = CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefeat,bdefeat,items)
+        currentestats = allestats[enemychosen]
+        print(f"You are going to fight a {enemychosen} it has {currentestats["Health Points"]}Health and has {currentestats["Strength"]} points of strength")
+        pstats, pinventory, bdefeat,edefeat,player_loss = CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,currentestats,edefeat,bdefeat,items)
         if player_loss == True:
             print("You Lose, (death during Enemy rush)")
             break
@@ -417,15 +454,27 @@ def FreeVillage(pstats,pinventory,weaponstats,weapons,consumables,edefeat,bdefea
 def UseShop(shop_dict,village,pstats,pinventory):
     shopping = True
     while shopping:
+        for x in range(0,pstats["Slots Unlocked"]):
+            if None in pinventory:
+                pinventory.remove(None)
         if len(pinventory) >= pstats["Slots Unlocked"]:
             print("Your inventory is full go back home to empty it and then you can shop.")
         else:
             print(f"SHOP KEEPER: Hello and Welcome to my Store, We have a nice selection of items for you to pick out today. \n ")
             for item in shop_dict[village]:
-                print(f"{item.key()} Price: {item["price"]}$. Brief description: {item["description"]}. Stock: {item["stock"]}")
+                print(f"{item} Price: {shop_dict[village][item]["price"]}$. Brief description: {shop_dict[village][item]["description"]}. Stock: {shop_dict[village][item]["stock"]}")
             itemwanted = input("SHOP KEEPER: What would you like? (type \"leave\" if you want to stop shopping) \n Enter valid shop item here: ").strip()
             if itemwanted == "leave":
-                shopping == False
+                shopping = False
+                smartchoices = ["JOHN: Uh i um like umm want umm the ", "JOHN: Hey I'm John, I would like the ", "JOHN: Thank you fine gentleman, I would like to purchase the "]
+                if pstats["Intelligence"] <= 50:
+                    print(f"{smartchoices[0]}{itemwanted}")
+                elif pstats["Intelligence"] > 50 and pstats["Intelligence"] < 100:
+                    print(f"{smartchoices[1]}{itemwanted}")
+                elif pstats["Intlligence"] >= 100:
+                    print(f"{smartchoices[2]}{itemwanted}")
+                else:
+                    print("Intelligence Error")
                 continue
             elif itemwanted in shop_dict[village]:
                 if shop_dict[village][itemwanted]["stock"] > 0:
@@ -434,11 +483,14 @@ def UseShop(shop_dict,village,pstats,pinventory):
                             mail = input("Write a letter here: ").strip()
                             print("You receive a reply")
                             mailchoices = ["Thank you for the letter, we really needed that information. Good luck on your adventure! -Dev","Thank you for the letter, I did not need you to explain your life story or anything of the such, Save the world faster! -Dev","Why did you send mail? Do you think these rats are a Joke? Stop doing useless actions its not worth it. -Dev"]
-                            print(random.choice(mailchoices))
+                            print(F"\n{random.choice(mailchoices)}\n")
                         else:
-                            pinventory = pinventory.append(itemwanted)
                             pstats["Money"] -= shop_dict[village][itemwanted]["price"]
-                            shop_dict[village]["stock"] -= 1
+                            shop_dict[village][itemwanted]["stock"] -= 1
+                            if itemwanted == ["Heal"]:
+                                pstats["Health points"] = pstats["Max Health"]
+                            else:
+                                pinventory.append(itemwanted)
                             print(f"SHOP KEEPER: Thank you for your purchase of a {itemwanted}")
                     else:
                         print("You are too poor to afford this item")
@@ -450,6 +502,8 @@ def UseShop(shop_dict,village,pstats,pinventory):
         leave = input("Would you like to leave the store? (y/n)\nEnter Response here: ").strip()
         if leave == "y":
             shopping == False
+            print("Shopping stopped")
+            break
         elif leave == "n":
             print("You may continue shoping")
         else:
@@ -458,10 +512,11 @@ def UseShop(shop_dict,village,pstats,pinventory):
 def Credits():
     print("Lead Developer: PS \n Other Developer: PS \n designer: PS \n Small ideas: eb partners \n Pseudocode: PS \n Thank you for playing this PS production")
 
-def JohnsHouse(pstats,pinventory,chest):
+def JohnsHouse(pstats,pinventory,chest,code,items):
     visiting = True
+    codes = 5
     while visiting:
-        print("Welcome to John's House you can rest (R), empty your inventory into a chest (EI), Take an item from the chest (TI), eat a Brisket (B), look at your stats (S) or leave (L) (input to capital letters in paranthesis for the action you would like to choose)")
+        print("Welcome to John's House you can rest (R), empty your inventory into a chest (EI), Take an item from the chest (TI), eat a Brisket (B), look at your stats (S), Use Codes (C), or leave (L) (input to capital letters in paranthesis for the action you would like to choose)")
         Action = input("Enter Action here: ").strip()
         if Action == "R":
             Rest()
@@ -471,7 +526,7 @@ def JohnsHouse(pstats,pinventory,chest):
             while using_chest:
                 item_to_move = input(f"What item would you like to move to your chest? (items in your inventory: {pinventory}) \n Enter item name here: ").strip()
                 if item_to_move in pinventory:
-                    chest = chest.append(item_to_move)
+                    chest.append(item_to_move)
                     pinventory.remove(item_to_move)
                     print("Item successfully moved")
                 else:
@@ -485,10 +540,10 @@ def JohnsHouse(pstats,pinventory,chest):
             print("Take item(s) from the chest")
             using_chest = True
             while using_chest:
-                if pinventory < pstats["Slots Unlocked"]:
+                if len(pinventory) < pstats["Slots Unlocked"]:
                     item_to_move = input(f"What item would you like to move to your inventory (item in the chest: {chest})").strip()
                     if item_to_move in chest:
-                        pinventory = pinventory.append(item_to_move)
+                        pinventory.append(item_to_move)
                         chest.remove(item_to_move)
                         print("Item successfully moved")
                     else:
@@ -505,16 +560,24 @@ def JohnsHouse(pstats,pinventory,chest):
             if "Brisket" in pinventory:
                 pstats["Max Health"]
                 pstats["Health Points"] = pstats["Max Health"]
-                print("You savor the brisket to the last bite. (Max health increased and HP is at max now)")
+                print("You savor the brisket to the last bite. (Max health increased and Health Points is at max now)")
                 time.sleep(5)
             else:
                 print("You have no Brisket :(")
         elif Action == "S":
-            print(f"Player Stats:{pstats}")
+            print(f"Player Stats:{pstats}\n Player Invntory: {pinventory}")
             print("Yes his name is John Jonathan Johnson :)")
         elif Action == "L":
             print("You leave John's house")
             visiting = False
+        elif Action == "C":
+            if codes > 0:
+                print("Enter Secret Codes")
+                codetest = input("Type Code here:").strip()
+                if codetest in code:
+                    ItemDropSystem(items,pstats,pinventory,"Secret")
+            else:
+                print("Max Limit on Codes reached")
         else:
             print("Invalid input please read the instructions")
             time.sleep(5)
@@ -529,21 +592,30 @@ def DefaultVillage(free_village,shop_dict,village,pinventory,pstats,weaponstats,
             pstats, pinventory,edefeat,player_loss = FreeVillage(pstats,pinventory,weaponstats,weapons,consumables,edefeat,bdefeat,items,monsters,estats)
             if player_loss == False:
                 print("You may now use access shops and other village activities")
-                free_village = free_village.append(village)
+                free_village.append(village)
             if player_loss == True:
                 break
         else:
-            print("You may use the shop or leave the village (\"Shop\",\"Leave\")")
+            print("You may use the shop or leave the village (\"Shop\",\"Leave\" or \"Fight\")")
             Action = input("Enter choice here: ").strip()
             if Action == "Shop":
                 pstats, pinventory, shop_dict = UseShop(shop_dict,village,pstats,pinventory)
             elif Action == "Leave":
                 print("You run out of the village and onto the main path.")
                 break
+            elif Action == "Fight":
+                startestats = estats
+                allestats = startestats
+                enemychosen = random.choice(monsters)
+                currentestats = allestats[enemychosen]
+                print(f"You are going to fight a {enemychosen} it has {currentestats["Health Points"]}Health and has {currentestats["Strength"]} points of strength")
+                pstats, pinventory, bdefeat,edefeat,player_loss = CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,currentestats,edefeat,bdefeat,items)
     return pstats, pinventory, shop_dict, edefeat, player_loss, free_village
 def BastilliaFortuica(pstats,pinventory,weaponstats,weapons,consumables,estats,edefeat,bdefeat,items):
     print("You enter the fort and see a shadowy figure in the distance. It is wearing something pointy on its head. As it walks closer you notice that it is wearing red robes. It comes under the torchlight, Its the King of the Rats!")
     estats = estats["Rat Dictator"]
+    player_loss = False
+    player_win = False
     pstats, pinventory, bdefeat, edefeat, player_loss = CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefeat,bdefeat,items)
     if player_loss == True:
         print("You have failed to conquer the rat King and he lives on and conquers the rest of the world.")
@@ -588,10 +660,16 @@ while True:
             print(f"Villages: John’s House (JH), Wellville (W), Chemisville (C), Gobapdular (G), Kraftville (KR), Bovisad (B), Kingdomsville (KG), Escargot (E), Litteratious (L), Bastillia Fortuica (You cannot enter unless all other villages have been explored) (BF)\nChoose a village (or John's House) to explore!")
             choice = input("Enter Choice here: ").strip()
             if choice == "JH":
-                player_stats, player_inventory, chest = JohnsHouse(player_stats,player_inventory,chest)
+                player_stats, player_inventory, chest = JohnsHouse(player_stats,player_inventory,chest,Codes,chestlootsystem)
             elif choice == "BF":
                 if len(freed_villages) == 8:
-                    player_stats, player_inventory, bosses_defeat, enemies_defeat, player_loss, player_win = BastilliaFortuica(player_stats,player_inventory,weaponstats,Weapons,consumables,boss_stats,enemies_defeated,bosses_defeated,chestlootsystem,enemies)
+                    player_stats, player_inventory, bosses_defeat, enemies_defeat, player_loss, player_win = BastilliaFortuica(player_stats,player_inventory,weaponstats,Weapons,consumables,boss_stats,enemies_defeated,bosses_defeated,chestlootsystem)
+                else:
+                    sure = input("Are You sure you want to enter the Bastille?(The Final Bosses Castle) y/n \n Enter here: ").strip()
+                    if sure == "y":
+                        player_stats, player_inventory, bosses_defeat, enemies_defeat, player_loss, player_win = BastilliaFortuica(player_stats,player_inventory,weaponstats,Weapons,consumables,boss_stats,enemies_defeated,bosses_defeated,chestlootsystem)
+                    else:
+                        print("Good Choice")
             elif choice in village_choices:
                 if choice == "W":
                     village_chosen = "Wellville"
@@ -626,16 +704,16 @@ while True:
         #scoreboard
         if isinstance(end_time,int):
             game_time = end_time - start_time
-        scoreboard.append({Name:{"Time":str(game_time)+" seconds","Enemies defeated":enemies_defeated,"Intelligence":player_stats["Intelligence"]}})
+        scoreboard = {Name:{"Time":str(game_time)+" seconds","Enemies defeated":enemies_defeated,"Intelligence":player_stats["Intelligence"]}}
         print("Scoreboard:")
         counter = 0
         for x in scoreboard:
-            print(scoreboard[counter])
+            print(f"{scoreboard.keys()}{scoreboard[x]}")
             counter += 1
         play_again = input(f"Would you like to play again? y/n \n Type here: ").strip()
         if play_again == "n":
             print("Thank you for playing")
             break
-    break
-
-
+    play_again = input("Would you like to exit the game? (don't exit unless dev because I want to see scores from other people) y/n \n Type here: ")
+    if play_again == "y":
+        break
