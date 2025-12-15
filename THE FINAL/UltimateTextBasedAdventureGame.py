@@ -130,8 +130,8 @@ village_shops = {
 
 chestlootsystem = {
     #There is repeats of the same items for skewing chance
-    "normal items":["Money","Pork","Money","Money","Money","Brisket","Money","Money","Money","Money","Money","Money","Brisket","Brisket","Brisket","Pork","Pork","Pork","John's Axe","Intelligence"],
-    "Secret Chest loot":["Money","John's Axe","Pork","Money","Intelligence","Intelligence","Intelligence","Intelligence","Intelligence","Money","Money","Intelligence","Item Slots","Item Slots","Item Slots"]
+    "normal items":["Money","Pork","Money","Money","Money","Brisket","Money","Money","Money","Money","Money","Money","Brisket","Brisket","Brisket","Pork","Pork","Pork","John's axe","Intelligence"],
+    "Secret Chest loot":["Money","John's axe","Pork","Money","Intelligence","Intelligence","Intelligence","Intelligence","Intelligence","Money","Money","Intelligence","Item Slots","Item Slots","Item Slots"]
 }
 
 freed_villages = []
@@ -200,7 +200,7 @@ resetdictionary= {
             }
         },
         "Escargot":{
-            "Longer Chopsticks":{
+            "Longer chopsticks":{
                 "price":50,
                 "description":"Weapon: is slightly stronger than default chopsticks but is otherwise useless",
                 "stock":1
@@ -215,15 +215,15 @@ resetdictionary= {
         }
     }
 }
-Weapons = ["Chopsticks","John's Axe","Longer Chopsticks","Bow"]
+Weapons = ["Chopsticks","John's axe","Longer chopsticks","Bow"]
 weaponstats = {
     "Chopsticks":{
         "damagemult":1
     },
-    "John's Axe":{
+    "John's axe":{
         "damagemult":2
     },
-    "Longer Chopsticks":{
+    "Longer chopsticks":{
         "damagemult":1.25
     },
     "Bow":{
@@ -260,7 +260,7 @@ def PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats):
             usableitems.append(x)
     item = ""
     while item not in usableitems:
-        item = input(f"choose an item to use {usableitems}: ").strip()
+        item = input(f"choose an item to use {usableitems}: ").strip().capitalize()
         if item not in usableitems:
             print(f"{item} not in inventory please try again")
     if item in pinventory:
@@ -348,9 +348,9 @@ def ItemDropSystem(items,pstats,pinventory,loottype):
         if randomitem == "Pork" or randomitem == "Brisket": 
             pinventory.append(randomitem)
             print("You have obtained a consumable")
-        elif randomitem == "John's Axe":
+        elif randomitem == "John's axe":
             pinventory.append(randomitem)
-            print("You have obtained a John's Axe!")
+            print("You have obtained a John's axe!")
         else:
             print("random item generator failed")
     elif randomitem == "Item Slots":
@@ -363,9 +363,9 @@ def OpenInventory(pinventory):
     print(f"Your inventory consists of {pinventory}")
 
 def CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefeat,bdefeat,items):
-    help2 = input("Would You like an explaination of what each of the items do? y/n \n Enter Here:").strip()
+    help2 = input("Would You like an explaination of what each of the items do? y/n \n Enter Here:").strip().lower()
     if help2 == "y":
-        print("There are two types of items in the combat situation, first there are weapons, a few examples would be, 'Chopsticks','Longer Chopsticks','John's Axe', and 'Chainsaw'\n Next there are consumables here are some consumables and what they do, \nWhen used: Brisket increases you max health so you can take more attacks until you die\nWhen used: Pork increases the health you have right now but does not go past max health\nWhen used: the Tome of max health increases max health like the brisket\nWhen used: the Tome of Damage: Increases your strength when used so you do more damage to enemies\nWhen you want to use a item type it EXACTLY as it is written when displayed in your inventory. Now go defeat your enemy\n")
+        print("There are two types of items in the combat situation, first there are weapons, a few examples would be, 'Chopsticks','Longer chopsticks','John's axe', and 'Chainsaw'\n Next there are consumables here are some consumables and what they do, \nWhen used: Brisket increases you max health so you can take more attacks until you die\nWhen used: Pork increases the health you have right now but does not go past max health\nWhen used: the Tome of max health increases max health like the brisket\nWhen used: the Tome of Damage: Increases your strength when used so you do more damage to enemies\nWhen you want to use a item type it EXACTLY as it is written when displayed in your inventory. Now go defeat your enemy\n")
     player_loss = False
     Enemydestroyed = edefeat
     bossdestroyed = bdefeat
@@ -405,6 +405,9 @@ def CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefea
                 continue
             time.sleep(1.5)
     if player_loss == False:
+        for x in range(0,pstats["Slots Unlocked"]):
+            if None in pinventory:
+                pinventory.remove(None)
         pinventory.append(ItemDropSystem(items,pstats,pinventory,"Normal"))
     return pstats, pinventory, bdefeat, edefeat, player_loss
 
@@ -414,6 +417,7 @@ def Rest():
 def FreeVillage(pstats,pinventory,weaponstats,weapons,consumables,edefeat,bdefeat,items,monsters,estats):
     win_counter = 0
     pre_ded_enemies = edefeat
+    player_loss = False
     while win_counter < 3:
         allestats = estats
         allestats = {
@@ -463,9 +467,10 @@ def UseShop(shop_dict,village,pstats,pinventory):
             print("Your inventory is full go back home to empty it and then you can shop.")
         else:
             print(f"SHOP KEEPER: Hello and Welcome to my Store, We have a nice selection of items for you to pick out today. \n ")
+            print(f"\nYou have {pstats["Money"]} Money\n")
             for item in shop_dict[village]:
                 print(f"{item} Price: {shop_dict[village][item]["price"]}$. Brief description: {shop_dict[village][item]["description"]}. Stock: {shop_dict[village][item]["stock"]}")
-            itemwanted = input("SHOP KEEPER: What would you like? (type \"leave\" if you want to stop shopping) \n Enter valid shop item here: ").strip()
+            itemwanted = input("SHOP KEEPER: What would you like? (type \"leave\" if you want to stop shopping) \n Enter valid shop item here: ").strip().capitalize()
             if itemwanted == "leave":
                 shopping = False
                 smartchoices = ["JOHN: Uh i um like umm want umm the ", "JOHN: Hey I'm John, I would like the ", "JOHN: Thank you fine gentleman, I would like to purchase the "]
@@ -501,7 +506,7 @@ def UseShop(shop_dict,village,pstats,pinventory):
             else:
                 print("Invalid input, please type the item exactly as it is written")
                 
-        leave = input("Would you like to leave the store? (y/n)\nEnter Response here: ").strip()
+        leave = input("Would you like to leave the store? (y/n)\nEnter Response here: ").strip().lower()
         if leave == "y":
             shopping == False
             print("Shopping stopped")
@@ -519,7 +524,7 @@ def JohnsHouse(pstats,pinventory,chest,code,items):
     codes = 5
     while visiting:
         print("Welcome to John's House you can rest (R), empty your inventory into a chest (EI), Take an item from the chest (TI), eat a Brisket (B), look at your stats (S), Use Codes (C), or leave (L) (input to capital letters in paranthesis for the action you would like to choose)")
-        Action = input("Enter Action here: ").strip()
+        Action = input("Enter Action here: ").strip().upper()
         if Action == "R":
             Rest()
         elif Action == "EI":
@@ -543,7 +548,7 @@ def JohnsHouse(pstats,pinventory,chest,code,items):
             using_chest = True
             while using_chest:
                 if len(pinventory) < pstats["Slots Unlocked"]:
-                    item_to_move = input(f"What item would you like to move to your inventory (item in the chest: {chest})").strip()
+                    item_to_move = input(f"What item would you like to move to your inventory (item in the chest: {chest})").strip().capitalize()
                     if item_to_move in chest:
                         pinventory.append(item_to_move)
                         chest.remove(item_to_move)
@@ -567,12 +572,18 @@ def JohnsHouse(pstats,pinventory,chest,code,items):
             else:
                 print("You have no Brisket :(")
         elif Action == "S":
+            for x in range(0,pstats["Slots Unlocked"]):
+                if None in pinventory:
+                    pinventory.remove(None)
             print(f"Player Stats:{pstats}\n Player Invntory: {pinventory}")
             print("Yes his name is John Jonathan Johnson :)")
         elif Action == "L":
             print("You leave John's house")
             visiting = False
         elif Action == "C":
+            for x in range(0,pstats["Slots Unlocked"]):
+                if None in pinventory:
+                    pinventory.remove(None)
             if codes > 0:
                 print("Enter Secret Codes")
                 codetest = input("Type Code here:").strip()
@@ -599,7 +610,7 @@ def DefaultVillage(free_village,shop_dict,village,pinventory,pstats,weaponstats,
                 break
         else:
             print("You may use the shop or leave the village (\"Shop\",\"Leave\" or \"Fight\")")
-            Action = input("Enter choice here: ").strip()
+            Action = input("Enter choice here: ").strip().capitalize()
             if Action == "Shop":
                 pstats, pinventory, shop_dict = UseShop(shop_dict,village,pstats,pinventory)
             elif Action == "Leave":
@@ -643,7 +654,7 @@ village_chosen = ""
 while True:
     print(f"Welcome to possibly the greatest text based adventure game you will see today \nIf you care about your score: \nthere are three stats that will be recorded on the scoreboard \n1)Your Time \n2)The Number of Enemies you Defeated \n3)Your Intelligence stat \n \n Now the game can begin \n")
     village_chosen = ""
-    Name = input("What is your name? \nEnter your name here: ").strip()
+    Name = input("What is your name? \nEnter your name here: ").strip().capitalize()
     end_time = 0.0
     game_time = 0.0
     endgame = False
@@ -666,14 +677,14 @@ while True:
         start_time = time.time()
         while not endgame:
             print(f"\nPlaces to go: John’s House (JH), Wellville (W), Chemisville (C), Gobapdular (G), Kraftville (KR), Bovisad (B), Kingdomsville (KG), Escargot (E), Litteratious (L), Bastillia Fortuica (You cannot enter unless all other villages have been explored) (BF) Help Button, (H)\nChoose a place to explore!")
-            choice = input("Enter Choice here: ").strip()
+            choice = input("Enter Choice here: ").strip().upper()
             if choice == "JH":
                 player_stats, player_inventory, chest = JohnsHouse(player_stats,player_inventory,chest,Codes,chestlootsystem)
             elif choice == "BF":
                 if len(freed_villages) == 8:
                     player_stats, player_inventory, bosses_defeat, enemies_defeat, player_loss, player_win = BastilliaFortuica(player_stats,player_inventory,weaponstats,Weapons,consumables,boss_stats,enemies_defeated,bosses_defeated,chestlootsystem)
                 else:
-                    sure = input("Are You sure you want to enter the Bastille?(The Final Bosses Castle) y/n \n Enter here: ").strip()
+                    sure = input("Are You sure you want to enter the Bastille?(The Final Bosses Castle) y/n \n Enter here: ").strip().lower()
                     if sure == "y":
                         player_stats, player_inventory, bosses_defeat, enemies_defeat, player_loss, player_win = BastilliaFortuica(player_stats,player_inventory,weaponstats,Weapons,consumables,boss_stats,enemies_defeated,bosses_defeated,chestlootsystem)
                     else:
@@ -699,7 +710,7 @@ while True:
                     print("\n \nHelp Menu consists of defining stats (DS), combat functions (CF), Shopping (SH), Places (P)")
                     goodanswer = False
                     while not goodanswer:
-                        helpchoice = input("Enter Choice here: ").strip()
+                        helpchoice = input("Enter Choice here: ").strip().upper()
                         if helpchoice == "DS" or helpchoice == "CF" or helpchoice == "SH" or helpchoice == "P":
                             goodanswer = True
                         else:
@@ -737,10 +748,10 @@ while True:
         for x in scoreboard:
             print(f"{scoreboard.keys()}{scoreboard[x]}")
             counter += 1
-        play_again = input(f"Would you like to play again? y/n \n Type here: ").strip()
+        play_again = input(f"Would you like to play again? y/n \n Type here: ").strip().lower()
         if play_again == "n":
             print("Thank you for playing")
             break
-    play_again = input("Would you like to exit the game? (don't exit unless dev because I want to see scores from other people) y/n \n Type here: ")
+    play_again = input("Would you like to exit the game? (don't exit unless dev because I want to see scores from other people) y/n \n Type here: ").strip().lower()
     if play_again == "y":
         break
