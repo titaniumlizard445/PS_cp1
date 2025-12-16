@@ -65,19 +65,19 @@ village_shops = {
         }
     },
     "Chemisville":{
-        "Tome of Damage":{
+        "Tome of damage":{
             "price":50,
             "description":"Increases your Strength permanently by 4 when used",
             "stock":3
         },
-        "Tome of Max Health":{
+        "Tome of max Health":{
             "price":40,
             "description":"Increases your defense permanently by 30 when used",
             "stock":3
         },
     },
     "Gobapdular":{
-        "Useless Hay":{
+        "Useless hay":{
             "price":10,
             "description":"A bundle of a farmer's finest wheat",
             "stock":10
@@ -113,10 +113,6 @@ village_shops = {
             "price":50,
             "description":"Weapon: is stronger than default chopsticks but is otherwise useless",
             "stock":1
-        },
-        "Chainsaw":{
-            "price":100,
-            "description":"Weapon: Highest damage output in game"
         }
     },
     "Litteratious":{
@@ -130,8 +126,8 @@ village_shops = {
 
 chestlootsystem = {
     #There is repeats of the same items for skewing chance
-    "normal items":["Money","Pork","Money","Money","Money","Brisket","Money","Money","Money","Money","Money","Money","Brisket","Brisket","Brisket","Pork","Pork","Pork","John's axe","Intelligence"],
-    "Secret Chest loot":["Money","John's axe","Pork","Money","Intelligence","Intelligence","Intelligence","Intelligence","Intelligence","Money","Money","Intelligence","Item Slots","Item Slots","Item Slots"]
+    "normal items":["Money","Pork","Money","Money","Money","Brisket","Money","Money","Money","Money","Money","Money","Brisket","Brisket","Brisket","Pork","Pork","Pork","John's axe","Intelligence","Bow"],
+    "Secret Chest loot":["Money","John's axe","Pork","Money","Intelligence","Intelligence","Intelligence","Intelligence","Intelligence","Money","Money","Intelligence","Item Slots","Item Slots","Item Slots","Tome of max health","Tome of damage"]
 }
 
 freed_villages = []
@@ -156,19 +152,19 @@ resetdictionary= {
             }
         },
         "Chemisville":{
-            "Tome of Damage":{
+            "Tome of damage":{
                 "price":50,
                 "description":"Increases your Strength permanently when used",
                 "stock":3
             },
-            "Tome of Max Health":{
+            "Tome of max health":{
                 "price":40,
                 "description":"Increases your defense permanently when used",
                 "stock":3
             },
         },
         "Gobapdular":{
-            "Useless Hay":{
+            "Useless hay":{
                 "price":10,
                 "description":"A bundle of a farmer's finest wheat",
                 "stock":10
@@ -231,7 +227,7 @@ weaponstats = {
     }
 }
 
-consumables = ["Brisket","Pork","Tome of Damage","Tome of Max Health","Tome of Defense"]
+consumables = ["Brisket","Pork","Tome of damage","Tome of max health"]
 name = ""
 
 start_time = 0
@@ -250,7 +246,7 @@ chest = []
 Codes = ["Pisbestletter","Pakistan","JohnTierListIsNotReal","John","BestGame","DevIsCoolest"]
 #funct
 
-def PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats):
+def PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats,edefeat):
     print("\nIt is now your turn to attack!")
     usableitems = []
     for x in pinventory:
@@ -270,29 +266,30 @@ def PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats):
                 print("Attack hit! rolling damage...")
                 damage = random.randint(1,10) * pstats["Strength"] * weaponstats[item]["damagemult"]
                 estats["Health Points"] -= damage
+                if estats["Health Points"] <= 0:
+                    estats["Health Points"] = 0
                 print(f"You did {damage} damage!\nThe Foe is at {estats["Health Points"]}HP\n")
             else:
                 print("You missed\n")
         elif item in consumables:
             if item == "Brisket":
                 pstats["Max Health"] += 25
-                pstats["Health Points"] += 25
+                pstats["Health Points"] += 30
                 pinventory.remove("Brisket")
                 print("You have gained 25 Max health \n")
             elif item == "Pork":
                 if pstats["Health Points"] >= pstats["Max Health"] or pstats["Health Points"] <= 0:
                     print("You cannot heal, You have Max health")
                 else:
-                    pstats["Health Points"] += 20
+                    pstats["Health Points"] += 50
                     pinventory.remove("Pork")
-                    print("You have gained 20HP\n")
-            elif item == "Tome of Damage":
-                pstats["Strength"] += 4
+                    print("You have gained 50HP\n")
+            elif item == "Tome of damage":
+                pstats["Strength"] += 5
                 print("Strength Increased \n")
                 pinventory.remove(item)
-            elif item == "Tome of Max Health":
-                pstats["Max Health"] += 25
-                pstats["Health Points"] = pstats["Max Health"]
+            elif item == "Tome of max health":
+                pstats["Max Health"] += 40
                 pinventory.remove(item)
                 print("Max Health Increased \n")
             else:
@@ -301,7 +298,11 @@ def PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats):
             print("Error item not found")
     else:
         print("pick a weapon that you have in your inventory")
-    return pstats, estats, pinventory
+    if estats["Health Points"] <= 0:
+        edefeat += 1
+    if estats["Health Points"] <= 0:
+        estats["Health Points"] = 0
+    return pstats, estats, pinventory, edefeat
 
 def MonsterTurn(estats,pstats,edefeat):
     print("It is now the foe's turn to attack!")
@@ -315,6 +316,7 @@ def MonsterTurn(estats,pstats,edefeat):
         print("The Foe missed")
     if estats["Health Points"] <=0:
         edefeat +=1
+        estats["Health Points"] = 0
     return pstats, estats, edefeat
 
 def BossTurn(bstats,pstats,bdefeat):
@@ -322,13 +324,14 @@ def BossTurn(bstats,pstats,bdefeat):
     hit_chance = random.randint(1,20)
     if hit_chance >= 6:
         print("Attack hit! rolling damage...")
-        damage = random.randint(1,10) * bstats["Strength"]
+        damage = random.randint(1,20) * bstats["Strength"] * 0.75
         pstats["Health Points"] -= damage
         print(f"The Boss did {damage} damage!\nYou are at {pstats["Health Points"]}HP")
     else:
         print("The Foe missed")
     if bstats["Health Points"] <=0:
         bdefeat +=1
+        bstats["Health Points"] = 0
     return pstats, bstats, bdefeat
 
 def ItemDropSystem(items,pstats,pinventory,loottype):
@@ -343,19 +346,22 @@ def ItemDropSystem(items,pstats,pinventory,loottype):
     elif randomitem == "Intelligence":
             randomintel = random.randint(1,40)
             pstats["Intelligence"] += randomintel
-            print(f"You gained {randomintel} Intelligence!")    
+            print(f"You gained {randomintel} Intelligence!")  
+    elif randomitem == "Item Slots":
+        pstats["Slots Unlocked"] += 1
+        print("You have gained a item slot!")  
     elif len(pinventory) < pstats["Slots Unlocked"]:
-        if randomitem == "Pork" or randomitem == "Brisket": 
+        if randomitem == "Pork" or randomitem == "Brisket" or randomitem == "Tome of max health" or randomitem == "Tome of damage": 
             pinventory.append(randomitem)
             print("You have obtained a consumable")
         elif randomitem == "John's axe":
             pinventory.append(randomitem)
             print("You have obtained a John's axe!")
+        elif randomitem == "Bow":
+            pinventory.append(randomitem)
+            print("You received a Bow which does 1.5 times the damage of chopsticks")
         else:
             print("random item generator failed")
-    elif randomitem == "Item Slots":
-        pstats["Slots Unlocked"] += 1
-        print("You have gained a item slot!")
     else:
         print(f"You have a filled inventory, You may not hold anymore items. (items slots {pstats["Slots Unlocked"]})")
 
@@ -371,7 +377,7 @@ def CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefea
     bossdestroyed = bdefeat
     while not player_loss and Enemydestroyed == edefeat and bossdestroyed == bdefeat:
         if estats["Boss"]:
-            pstats, estats, pinventory = PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats)
+            pstats, estats, pinventory, bdefeat = PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats,bdefeat)
             if pstats["Health Points"] <= 0:
                 player_loss = True
                 continue
@@ -388,7 +394,7 @@ def CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefea
                 continue
             time.sleep(1.5)
         else:
-            pstats, estats, pinventory = PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats)
+            pstats, estats, pinventory, edefeat = PlayerTurn(pstats,pinventory,weaponstats,weapons,consumables,estats,edefeat)
             if pstats["Health Points"] <= 0:
                 player_loss = True
                 continue
@@ -471,14 +477,14 @@ def UseShop(shop_dict,village,pstats,pinventory):
             for item in shop_dict[village]:
                 print(f"{item} Price: {shop_dict[village][item]["price"]}$. Brief description: {shop_dict[village][item]["description"]}. Stock: {shop_dict[village][item]["stock"]}")
             itemwanted = input("SHOP KEEPER: What would you like? (type \"leave\" if you want to stop shopping) \n Enter valid shop item here: ").strip().capitalize()
-            if itemwanted == "leave":
+            if itemwanted == "Leave":
                 shopping = False
                 smartchoices = ["JOHN: Uh i um like umm want umm the ", "JOHN: Hey I'm John, I would like the ", "JOHN: Thank you fine gentleman, I would like to purchase the "]
                 if pstats["Intelligence"] <= 50:
                     print(f"{smartchoices[0]}{itemwanted}")
                 elif pstats["Intelligence"] > 50 and pstats["Intelligence"] < 100:
                     print(f"{smartchoices[1]}{itemwanted}")
-                elif pstats["Intlligence"] >= 100:
+                elif pstats["Intelligence"] >= 100:
                     print(f"{smartchoices[2]}{itemwanted}")
                 else:
                     print("Intelligence Error")
@@ -494,7 +500,7 @@ def UseShop(shop_dict,village,pstats,pinventory):
                         else:
                             pstats["Money"] -= shop_dict[village][itemwanted]["price"]
                             shop_dict[village][itemwanted]["stock"] -= 1
-                            if itemwanted == ["Heal"]:
+                            if itemwanted == "Heal":
                                 pstats["Health points"] = pstats["Max Health"]
                             else:
                                 pinventory.append(itemwanted)
@@ -565,8 +571,9 @@ def JohnsHouse(pstats,pinventory,chest,code,items):
                     print("Continue your buisness.")
         elif Action == "B":
             if "Brisket" in pinventory:
-                pstats["Max Health"]
+                pstats["Max Health"] += 25
                 pstats["Health Points"] = pstats["Max Health"]
+                pinventory.remove("Brisket")
                 print("You savor the brisket to the last bite. (Max health increased and Health Points is at max now)")
                 time.sleep(5)
             else:
@@ -575,7 +582,7 @@ def JohnsHouse(pstats,pinventory,chest,code,items):
             for x in range(0,pstats["Slots Unlocked"]):
                 if None in pinventory:
                     pinventory.remove(None)
-            print(f"Player Stats:{pstats}\n Player Invntory: {pinventory}")
+            print(f"Player Stats:{pstats}\n Player Inventory: {pinventory}")
             print("Yes his name is John Jonathan Johnson :)")
         elif Action == "L":
             print("You leave John's house")
@@ -598,6 +605,7 @@ def JohnsHouse(pstats,pinventory,chest,code,items):
 #(parameters) take in name and dictionary with info and villages defeated
 def DefaultVillage(free_village,shop_dict,village,pinventory,pstats,weaponstats,weapons,consumables,edefeat,bdefeat,items,monsters,estats):
     visiting = True
+    player_loss = False
     while visiting:
         print(f"Welcome to {village}")
         if village not in free_village:
@@ -635,6 +643,20 @@ def BastilliaFortuica(pstats,pinventory,weaponstats,weapons,consumables,estats,e
     else:
         print(f"You have successfully defeated the rat king. As you journey further into the Fort, you see a familiar shape, but at the sight of you it runs off very quickly down a nearby corridoor. \n \nYou Chase after it left, right, down some stairs until it stops. \n \nIt turns to face you. You see that it is wearing a dirty, brown trenchcoat and fedora. In a muffled voice it says,\"Your time has come dear friend my rat kingdom will take over the world and no one will stop me!\"\n \nYou realize that this is your friend George, \n \n\"Why would you do this George?\" You ask him. George does not respond. You must defeat George to save the world.")
         bdefeat += 1
+        estats = {
+            "Rat Dictator":{
+            "Strength":15,
+            "Health Points":250,
+            "Boss":True
+        },
+        "George":{
+            "Strength":20,
+            "Health Points":300,
+            "Boss":True
+            }
+        }
+        
+        estats = estats["George"]
         pstats, pinventory, bdefeat, edefeat, player_loss = CombatSystem(pstats,pinventory,weaponstats,weapons,consumables,estats,edefeat,bdefeat,items)
         if player_loss == True:
             print("You have failed to conquer the George and he lives on and conquers the rest of the world and reign in absolute as an autoritarian.")
@@ -662,10 +684,22 @@ while True:
     village_shops = resetdictionary["Village Shops"]
     player_stats = resetdictionary["player stats"]
     player_inventory = ["Chopsticks"]
+    boss_stats = {
+        "Rat Dictator":{
+            "Strength":15,
+            "Health Points":250,
+            "Boss":True
+        },
+        "George":{
+            "Strength":20,
+            "Health Points":300,
+            "Boss":True
+        }
+    }
     player_win = False
     #game
     while True:
-        print(f"John was a humble woodcutter who lived alone in a weather-beaten log cabin deep in the heart of the vast Greenwood Forest. The nearest village lay fifty miles away—far enough that John could go months without seeing another human soul, which suited him fine.\n \nHe had his trees, his fireplace, and his meals eaten with his trusty pair of chopsticks—a habit picked up from the rare Asian merchants who wandered close enough for trade. His only friend in the world was George—a wandering tinkerer who visited every few months with stories, odd inventions, and a warm smile that John secretly treasured. \n \n The Day Everything ChangedOne crisp autumn morning, John marched into the woods carrying his well-used axe, ready to split logs for winter. But fate had other plans. A horse's frantic gallop broke the forest silence. A messenger—mud-stained, wide-eyed—rode up and thrust a rolled parchment into John's hands. \n \n “The eight villages to the south have fallen! Invaded by mutant rats—thousands of them! And… and your friend George was taken.”\n \n The messenger fled almost immediately, as if the forest itself were unsafe. John's heart pounded with panic and anger. George—the one person who cared about him—captured by rats? The thought didn't make sense. But before John could process the message, he heard chittering behind him. He spun around. \n \nToo late. A swarm of grotesque, oversized rats leapt from the underbrush, their eyes glowing with eerie green light. They rushed him like a furry tidal wave, squeaking with unnatural coordination. John swung his axe wildly—but they overwhelmed him. He felt tiny claws on his arms, his legs, his shoulders. In seconds they wrenched the axe from his grip and vanished into the forest with it, carrying the iron-headed tool like a trophy. John was left panting, weaponless, and furious.\n")
+        print(f"John was a humble woodcutter who lived alone in a weather-beaten log cabin deep in the heart of the vast Greenwood Forest. The nearest village lay fifty miles away—far enough that John could go months without seeing another human soul, which suited him fine.\n \nHe had his trees, his fireplace, and his meals eaten with his trusty pair of chopsticks—a habit picked up from the rare Asian merchants who wandered close enough for trade. His only friend in the world was George—a wandering tinkerer who visited every few months with stories, odd inventions, and a warm smile that John secretly treasured. \n \n The Day Everything Changed One crisp autumn morning, John marched into the woods carrying his well-used axe, ready to split logs for winter. But fate had other plans. A horse's frantic gallop broke the forest silence. A messenger—mud-stained, wide-eyed—rode up and thrust a rolled parchment into John's hands. \n \n “The eight villages to the south have fallen! Invaded by mutant rats—thousands of them! And… and your friend George was taken.”\n \n The messenger fled almost immediately, as if the forest itself were unsafe. John's heart pounded with panic and anger. George—the one person who cared about him—captured by rats? The thought didn't make sense. But before John could process the message, he heard chittering behind him. He spun around. \n \nToo late. A swarm of grotesque, oversized rats leapt from the underbrush, their eyes glowing with eerie green light. They rushed him like a furry tidal wave, squeaking with unnatural coordination. John swung his axe wildly—but they overwhelmed him. He felt tiny claws on his arms, his legs, his shoulders. In seconds they wrenched the axe from his grip and vanished into the forest with it, carrying the iron-headed tool like a trophy. John was left panting, weaponless, and furious (Execept your treasured chopsticks are still there).\n")
         TutorialIntroduction()
         endgame == False
         player_loss = False
@@ -675,7 +709,11 @@ while True:
         player_win = False
         freed_villages = []
         start_time = time.time()
+        print(start_time)
         while not endgame:
+            player_inventory = ["Chopsticks"]
+            village_shops = resetdictionary["Village Shops"]
+            player_stats = resetdictionary["player stats"]
             print(f"\nPlaces to go: John’s House (JH), Wellville (W), Chemisville (C), Gobapdular (G), Kraftville (KR), Bovisad (B), Kingdomsville (KG), Escargot (E), Litteratious (L), Bastillia Fortuica (You cannot enter unless all other villages have been explored) (BF) Help Button, (H)\nChoose a place to explore!")
             choice = input("Enter Choice here: ").strip().upper()
             if choice == "JH":
@@ -706,7 +744,10 @@ while True:
                     village_chosen = "Escargot"
                 elif choice == "L":
                     village_chosen = "Litteratious"
-                elif choice == "H":
+                else:
+                    print("Village Error ocurred")
+                player_stats, player_inventory, village_shops, enemies_defeated, player_loss,freed_villages = DefaultVillage(freed_villages,village_shops,village_chosen,player_inventory,player_stats,weaponstats,Weapons,consumables,enemies_defeated,bosses_defeated,chestlootsystem,enemies,enemies_stats)
+            elif choice == "H":
                     print("\n \nHelp Menu consists of defining stats (DS), combat functions (CF), Shopping (SH), Places (P)")
                     goodanswer = False
                     while not goodanswer:
@@ -725,9 +766,6 @@ while True:
                         print("\nYou have a 10 options of places to go to,\n1) You can go to John's House which allows you to move items in and out of your inventory and see what your health, strength etc. 2)Bastillia Fortuica, This is the final zone of the game and is heavily discouraged to enter until all of the other villages have been explored thorougly. 3)Any other village, These areas must be unlocked by first fighting off 3 monsters and then you can shop, fight a monster for stuff, or leave the village.\n\n")
                     else:
                         print("A error occurred in help menu")
-                else:
-                    print("Village Error ocurred")
-                player_stats, player_inventory, village_shops, enemies_defeated, player_loss,freed_villages = DefaultVillage(freed_villages,village_shops,village_chosen,player_inventory,player_stats,weaponstats,Weapons,consumables,enemies_defeated,bosses_defeated,chestlootsystem,enemies,enemies_stats)
             else:
                 print("Invalid input please try again")
                 continue
@@ -738,11 +776,12 @@ while True:
             if player_win == True:
                 print("GG")
                 end_time = time.time()
+                print(end_time)
                 break
         #scoreboard
-        if isinstance(end_time,int):
+        if isinstance(end_time,float):
             game_time = end_time - start_time
-        scoreboard = {Name:{"Time":str(game_time)+" seconds","Enemies defeated":enemies_defeated,"Intelligence":player_stats["Intelligence"]}}
+        scoreboard.append({Name:{"Time":str(game_time)+" seconds","Enemies defeated":enemies_defeated,"Intelligence":player_stats["Intelligence"]}})
         print("Scoreboard:")
         counter = 0
         for x in scoreboard:
@@ -755,3 +794,7 @@ while True:
     play_again = input("Would you like to exit the game? (don't exit unless dev because I want to see scores from other people) y/n \n Type here: ").strip().lower()
     if play_again == "y":
         break
+
+
+
+    #End
