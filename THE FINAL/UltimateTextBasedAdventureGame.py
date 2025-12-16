@@ -781,7 +781,7 @@ while True:
         #scoreboard
         if isinstance(end_time,float):
             game_time = end_time - start_time
-        scoreboard.append({Name:{"Time":str(game_time)+" seconds","Enemies defeated":enemies_defeated,"Intelligence":player_stats["Intelligence"]}})
+        scoreboard[name]={"Time":str(game_time)+" seconds","Enemies defeated":enemies_defeated,"Intelligence":player_stats["Intelligence"]}
         print("Scoreboard:")
         counter = 0
         for x in scoreboard:
